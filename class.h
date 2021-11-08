@@ -6,6 +6,8 @@
 #include <vector>
 using namespace std;
 
+#define joker_value 99
+
 class card{
         public:
                 card();
@@ -15,6 +17,7 @@ class card{
 		int get_loc();
 		void set_loc(int loc_);
         friend void load_log_data(int& nplyaers, int& turn);
+        friend class board;
 
         private:
                 int id;
@@ -31,6 +34,8 @@ class board{
 		int check_valid_fin();
 		void print_board();
         friend void load_log_data(int& nplyaers, int& turn);
+
+        int group_type_check(int idx);
 
 		
 private:
