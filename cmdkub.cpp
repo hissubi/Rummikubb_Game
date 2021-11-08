@@ -20,7 +20,7 @@ using namespace std;
 
 player players[5];
 vector<int> deck;
-card all_cards[13*8];
+card all_cards[13*8+3];
 board table;
 
 int main(){
