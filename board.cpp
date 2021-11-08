@@ -102,7 +102,7 @@ int board::check_valid_fin(){
         else if(gtc == 2){
             // Color duplicate check
             buf = -1;
-            cbuf = { 0, 0, 0, 0, 0 };
+            for(int j=0; j<5; j++) cbuf[j]=0;
             for(int k=0; k<group[i].size(); k++){
                 if(group[i][k]->value != joker_value){
                     if(buf == -1)
