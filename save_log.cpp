@@ -60,6 +60,7 @@ void load_log_data(int& nplayers, int& turn)
             table.group[i].push_back(newcard);
         }
     }
+    table_checkpoint.copy(table);
     fclose(log_file);
 
 }
