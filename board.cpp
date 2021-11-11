@@ -140,3 +140,15 @@ int board::check_valid_fin(){
     cout << "Board Check Complete\n";
 	return 0;
 }
+
+void board::copy(board a) {
+    num_rows = a.get_num_rows();
+    group.resize(num_rows);
+    for(int i = 0; i < num_rows; i++) {
+        group[i].resize(a.get_group().at(i).size());
+        for(int j = 0; j < group[i].size(); j++){
+            group[i][j] = a.get_group().at(i).at(j);
+        }
+    }        
+}
+

@@ -22,6 +22,7 @@ player players[5];
 vector<int> deck;
 card all_cards[13*8+3];
 board table;
+board table_checkpoint;
 
 int main(){
     char load;
@@ -84,7 +85,7 @@ int main(){
 		cout << "Player " << t << " turn" << endl;
 		while(1){
 			players[t].print_hand_by_color();
-			cout << "Action : draw_card, ?? ,finish" << endl;
+			cout << "Action : draw_card, ??, checkpoint, finish" << endl;
 			string input;
 			cin >> input;
 			if(input == "draw_card"){
@@ -93,6 +94,16 @@ int main(){
 				players[t].print_hand_by_color();
 				break;
 			}
+            if(input == "checkpoint"){
+                if(table.check_valid_fin()){
+                    cout << "Load previous table..." << endl;
+                    table.copy(table_checkpoint);
+                }
+                else{
+                    table_checkpoint.copy(table);
+                    cout << "Checkpoint saved!" << endl;
+                }
+            }
 			/**** todo: other actions ****/
 			if(input == "finish"){
 				break;

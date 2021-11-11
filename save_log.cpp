@@ -16,7 +16,6 @@ void save_log_data(int nplayers, int turn)
             fprintf(log_file, "%d ", players[i].get_card().at(j));
         }
     }
-    cout << "?\n";
     cout << "table numrow : " << table.get_num_rows() << endl;
     fprintf(log_file, "%d ", table.get_num_rows());
     for(int i = 0; i < table.get_num_rows(); i++) {
@@ -25,7 +24,6 @@ void save_log_data(int nplayers, int turn)
             fprintf(log_file, "%d ", table.get_group().at(i).at(j)->get_id());
         }
     }
-    cout << "@\n";
     fclose(log_file);
 }
 
@@ -58,7 +56,7 @@ void load_log_data(int& nplayers, int& turn)
         for(int j = 0; j < group_size; j++) {
             int card_id;
             fscanf(log_file, "%d", &card_id);
-            card* newcard = new card(card_id, card_id%4, card_id%13);
+            card* newcard = new card(card_id, card_id%4, card_id%13); // need to fix color value calculating
             table.group[i].push_back(newcard);
         }
     }

@@ -33,6 +33,7 @@ class board{
         vector <vector <card*>> get_group();
 		int check_valid_fin();
 		void print_board();
+        void copy(board a);
         friend void load_log_data(int& nplyaers, int& turn);
 
         int group_type_check(int idx);
