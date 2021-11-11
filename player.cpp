@@ -32,6 +32,9 @@ void player::print_hand_by_color(){
 bool player::get_is_register(){
     return is_register;
 }
+int player::get_player_id(){
+    return player_id;
+}
 int player::get_card_num(){
 	return card_num;
 }
@@ -41,5 +44,14 @@ vector<int> player::get_card(){
 void player::add_card(int _card_id){
 	card_id.push_back(_card_id);
 	card_num++;
+}
+void player::copy(player p){
+    is_register = p.get_is_register();
+    player_id = p.get_player_id();
+    card_num = p.get_card_num();
+    card_id.resize(card_num);
+    for(int i = 0; i < card_num; i++){
+        card_id[i] = p.get_card().at(i);
+    }
 }
 

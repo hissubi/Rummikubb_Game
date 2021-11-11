@@ -4,7 +4,7 @@
 void save_log_data(int nplayers, int turn)
 {
     FILE* log_file = fopen("Logfile.txt", "w");
-    fprintf(log_file, "%d %d ", nplayers, turn);
+    fprintf(log_file, "%d %d ", nplayers, turn+1);
     for(int i = 0; i < nplayers; i++)
     {
         fprintf(log_file, "%d ", i);
@@ -16,7 +16,6 @@ void save_log_data(int nplayers, int turn)
             fprintf(log_file, "%d ", players[i].get_card().at(j));
         }
     }
-    cout << "table numrow : " << table.get_num_rows() << endl;
     fprintf(log_file, "%d ", table.get_num_rows());
     for(int i = 0; i < table.get_num_rows(); i++) {
         fprintf(log_file, "%d ", table.get_group().at(i).size());
@@ -60,7 +59,7 @@ void load_log_data(int& nplayers, int& turn)
             table.group[i].push_back(newcard);
         }
     }
-    table_checkpoint.copy(table);
+    saved_checkpoint.copy_all(players, table);
     fclose(log_file);
 
 }

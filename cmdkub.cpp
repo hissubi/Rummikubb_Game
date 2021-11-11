@@ -22,7 +22,7 @@ player players[5];
 vector<int> deck;
 card all_cards[13*8+3];
 board table;
-board table_checkpoint;
+checkpoint saved_checkpoint;
 
 int main(){
     char load;
@@ -69,6 +69,7 @@ int main(){
 	            }
                 else break;
             }
+            saved_checkpoint.set_nplayer(num_players);
 	        for(int i=1;i<=num_players;i++){
 		        players[i] = player(i);
 		        distribute_initial_card(i);
@@ -79,8 +80,8 @@ int main(){
             cout << "Invalid input! Try again." << endl;
         }
     }
-
-	for(; turn < 100; turn++){	//what is MAX turn?
+    
+	for(;; turn++){	
 		int t = turn%num_players+1;
 		cout << "Player " << t << " turn" << endl;
 		while(1){
@@ -97,10 +98,11 @@ int main(){
             if(input == "checkpoint"){
                 if(table.check_valid_fin()){
                     cout << "Load previous table..." << endl;
-                    table.copy(table_checkpoint);
+                    players[t].copy(saved_checkpoint.get_player_data(t)); 
+                    table.copy(saved_checkpoint.get_board_data());
                 }
                 else{
-                    table_checkpoint.copy(table);
+                    saved_checkpoint.copy(t, players[t], table);
                     cout << "Checkpoint saved!" << endl;
                 }
             }
