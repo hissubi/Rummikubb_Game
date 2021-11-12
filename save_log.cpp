@@ -13,7 +13,7 @@ void save_log_data(int nplayers, int turn)
 
         fprintf(log_file, "%d ", players[i].get_card_num());
         for(int j = 0; j < players[i].get_card_num(); j++) {
-            fprintf(log_file, "%d ", players[i].get_card().at(j));
+            fprintf(log_file, "%d ", (players[i].get_card().at(j))->get_id() );
         }
     }
     fprintf(log_file, "%d ", table.get_num_rows());
@@ -42,7 +42,8 @@ void load_log_data(int& nplayers, int& turn)
         for(int j = 0; j < players[i].card_num; j++) {
             int card_id;
             fscanf(log_file, "%d", &card_id);
-            players[i].card_id.push_back(card_id);
+            card* load_card = new card(card_id, card_id%4, card_id%13);
+            players[i].hand_card.push_back(load_card);
         }
     }
 

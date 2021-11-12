@@ -57,12 +57,12 @@ class player{
         bool get_is_register();
 		int get_player_id();
         int get_card_num();
-        vector<int> get_card();
+        vector<card*> get_card();
 		
-        void print_hand_by_color();
-		void print_hand_by_number();
+        void sort_by_color();
+		void sort_by_number();
 		
-        void add_card(int card_id);
+        void add_card(card* hand_card);
         void copy(player p);
         friend void load_log_data(int& nplayers, int& turn);
 
@@ -71,7 +71,7 @@ class player{
         bool is_register;
 		int player_id;
 		int card_num;
-		vector<int> card_id; 
+		vector<card*> hand_card; 
 };
 
 class checkpoint{

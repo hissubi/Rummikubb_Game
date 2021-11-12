@@ -85,14 +85,15 @@ int main(){
 		int t = turn%num_players+1;
 		cout << "Player " << t << " turn" << endl;
 		while(1){
-			players[t].print_hand_by_color();
+			players[t].sort_by_color();
 			cout << "Action : draw_card, ??, checkpoint, finish" << endl;
 			string input;
 			cin >> input;
 			if(input == "draw_card"){
 				int new_card_id = pop_card_from_deck();
-				players[t].add_card(new_card_id);
-				players[t].print_hand_by_color();
+                card* new_card = new card(new_card_id, new_card_id%4, new_card_id%13);
+				players[t].add_card(new_card);
+				players[t].sort_by_color();
 				break;
 			}
             if(input == "checkpoint"){
@@ -127,7 +128,8 @@ void distribute_initial_card(int player_id){
 
 	for(int i=0;i<init_card_num;i++){
 		int new_card_id = pop_card_from_deck();
-		players[player_id].add_card(new_card_id);
+	    card* new_card = new card(new_card_id, new_card_id%4, new_card_id%13);
+		players[player_id].add_card(new_card);
 	}
 	return;
 }

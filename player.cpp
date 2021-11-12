@@ -11,22 +11,20 @@ player::player(int id_){
 	card_num = 0;
 }
 
-void player::print_hand_by_color(){
-	/**** todo : sort the cards ****/
-	for(int i=0;i<card_num-1;i++){
-		for(int j=i+1;j<card_num;j++){
-			if((card_id[i]-1) % 13 > (card_id[j]-1) % 13){
-				int temp = card_id[i];
-				card_id[i] = card_id[j];
-				card_id[j] = temp;
-			}
-		}
-	}
-	for(int i=0;i<card_num;i++){
-		all_cards[card_id[i]].print_card();
-		cout << " ";
-	}
-	cout << endl;
+void player::sort_by_color(){
+	/*vector<card*> res;
+    card* tmp;
+    for(size_t i=0; i<hand_card.size(); i++){
+        int MIN=999;
+        for(size_t i=0; i<hand_card.size(); i++){
+            
+        }
+    } update sooooon~ */ 
+    // sort and print "hand_card" //
+}
+
+void player::sort_by_number(){
+    // sort and print "hand_card" //
 }
 
 bool player::get_is_register(){
@@ -38,20 +36,20 @@ int player::get_player_id(){
 int player::get_card_num(){
 	return card_num;
 }
-vector<int> player::get_card(){
-    return card_id;
+vector<card*> player::get_card(){
+    return hand_card;
 }
-void player::add_card(int _card_id){
-	card_id.push_back(_card_id);
+void player::add_card(card* _hand_card){
+	hand_card.push_back(_hand_card);
 	card_num++;
 }
 void player::copy(player p){
     is_register = p.get_is_register();
     player_id = p.get_player_id();
     card_num = p.get_card_num();
-    card_id.resize(card_num);
+    hand_card.resize(card_num);
     for(int i = 0; i < card_num; i++){
-        card_id[i] = p.get_card().at(i);
+        hand_card[i] = p.get_card().at(i);
     }
 }
 
