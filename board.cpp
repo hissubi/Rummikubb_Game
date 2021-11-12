@@ -16,9 +16,10 @@ vector <vector <card*>> board::get_group(){
 
 void board::print_board(){ // Update
 	for(int i=0;i<num_rows; i++){
+		cout << "GROUP " << i+1;
 		for(size_t j=0; j<group[i].size(); j++){
-			
             // Print Card //
+			group[i][j]->print_card();
 		}
 		cout << endl;
 	}
