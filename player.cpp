@@ -26,19 +26,17 @@ bool player::is_bigger_by_number(card* a, card* b){
 }
 
 void player::sort_by_color(){
-    for(size_t i=0; i<hand_card.size(); i++){
-        for(size_t k=1; k<hand_card.size(); k++){
+    for(int i=0; i<card_num; i++){
+        for(int k=1; k<card_num; k++){
             if( is_bigger_by_color(hand_card[k-1], hand_card[k])  ){
-                //cout << "before : " << hand_card[k-1]->id << " " << hand_card[k]->id << endl;
                 card* tmp = hand_card.at(k);
                 hand_card.at(k) = hand_card.at(k-1);
                 hand_card.at(k-1) = tmp;                            
-                //cout << "after : " << hand_card[k-1]->id << " " << hand_card[k]->id << endl;
             }                       
         }
     } 
     for(int i=0; i<card_num; i++){
-        all_cards[hand_card[i]->id].print_card();
+        hand_card[i]->print_card();
         cout << " ";                    
     }
     cout << endl; 
@@ -48,14 +46,14 @@ void player::sort_by_number(){
     for(int i=0; i<card_num; i++){
         for(int k=1; k<card_num; k++){
             if( is_bigger_by_number(hand_card[k-1], hand_card[k])  ){
-                card* tmp = hand_card[k];
-                hand_card[k] = hand_card[k-1];
-                hand_card[k-1] = tmp;                                                   
+                card* tmp = hand_card.at(k);
+                hand_card.at(k) = hand_card.at(k-1);
+                hand_card.at(k-1) = tmp;                                                   
             }                       
         }
     } 
     for(int i=0; i<card_num; i++){
-        all_cards[hand_card[i]->id].print_card();
+        hand_card[i]->print_card();
         cout << " ";                    
     }
     cout << endl; 
