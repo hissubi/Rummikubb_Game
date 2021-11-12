@@ -21,6 +21,7 @@ class card{
 
         friend void load_log_data(int& nplayers, int& turn);
         friend class board;
+        friend class player;
 
         private:
                 int id;
@@ -59,6 +60,8 @@ class player{
         int get_card_num();
         vector<card*> get_card();
 		
+        bool is_bigger_by_color(card* a, card* b);
+        bool is_bigger_by_number(card* a, card* b);
         void sort_by_color();
 		void sort_by_number();
 		

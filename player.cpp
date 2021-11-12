@@ -11,20 +11,54 @@ player::player(int id_){
 	card_num = 0;
 }
 
+bool player::is_bigger_by_color(card* a, card* b){
+    if(a->color > b->color) return true;
+    if(a->color < b->color) return false;
+    if(a->value > b->value) return true;
+    return false;  
+}
+
+bool player::is_bigger_by_number(card* a, card* b){
+    if(a->value > b->value) return true;
+    if(a->value < b->value) return false;
+    if(a->color > b->color) return true;
+    return false;                
+}
+
 void player::sort_by_color(){
-	/*vector<card*> res;
-    card* tmp;
     for(size_t i=0; i<hand_card.size(); i++){
-        int MIN=999;
-        for(size_t i=0; i<hand_card.size(); i++){
-            
+        for(size_t k=1; k<hand_card.size(); k++){
+            if( is_bigger_by_color(hand_card[k-1], hand_card[k])  ){
+                //cout << "before : " << hand_card[k-1]->id << " " << hand_card[k]->id << endl;
+                card* tmp = hand_card.at(k);
+                hand_card.at(k) = hand_card.at(k-1);
+                hand_card.at(k-1) = tmp;                            
+                //cout << "after : " << hand_card[k-1]->id << " " << hand_card[k]->id << endl;
+            }                       
         }
-    } update sooooon~ */ 
-    // sort and print "hand_card" //
+    } 
+    for(int i=0; i<card_num; i++){
+        all_cards[hand_card[i]->id].print_card();
+        cout << " ";                    
+    }
+    cout << endl; 
 }
 
 void player::sort_by_number(){
-    // sort and print "hand_card" //
+    for(int i=0; i<card_num; i++){
+        for(int k=1; k<card_num; k++){
+            if( is_bigger_by_number(hand_card[k-1], hand_card[k])  ){
+                card* tmp = hand_card[k];
+                hand_card[k] = hand_card[k-1];
+                hand_card[k-1] = tmp;                                                   
+            }                       
+        }
+    } 
+    for(int i=0; i<card_num; i++){
+        all_cards[hand_card[i]->id].print_card();
+        cout << " ";                    
+    }
+    cout << endl; 
 }
 
 bool player::get_is_register(){
