@@ -67,7 +67,7 @@ int board::check_valid_fin(){
     int N_Group = group.size();
     
     // 1 : Group Member Violation
-    for(int i=0; i<N_Group; i++){
+    for(int i=1; i<N_Group; i++){
         if(group[i].size() < 3){
             cout << "Invalid type 01 : Too-Small Group\n";
             cout << "Group Num : " << i << endl;
@@ -75,7 +75,7 @@ int board::check_valid_fin(){
         }
     }
     // 2 : Invalid Grouping
-    for(int i=0; i<N_Group; i++){
+    for(int i=1; i<N_Group; i++){
         int gtc = group_type_check(i);
         int buf;
         int cbuf[5];
