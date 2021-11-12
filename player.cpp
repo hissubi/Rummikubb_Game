@@ -34,7 +34,7 @@ void player::sort_by_color(){
                 hand_card.at(k-1) = tmp;                            
             }                       
         }
-    } 
+    }
     for(int i=0; i<card_num; i++){
         hand_card[i]->print_card();
         cout << " ";                    
@@ -68,8 +68,15 @@ int player::get_player_id(){
 int player::get_card_num(){
 	return card_num;
 }
+void player::set_card_num(int in){
+	card_num = in;
+}
 vector<card*> player::get_card(){
     return hand_card;
+}
+void player::set_card(vector <card*> in){
+	hand_card.clear();
+	hand_card = in;
 }
 void player::add_card(card* _hand_card){
 	hand_card.push_back(_hand_card);

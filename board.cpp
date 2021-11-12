@@ -3,23 +3,32 @@
 
 board::board(){
 	group.clear();
+	vector <card *> temp;
+	group.push_back(temp);
     num_rows = 0;
 }
 
 int board::get_num_rows(){
     return num_rows;
 }
-
+void board::set_num_rows(int in){
+    num_rows = in;
+}
 vector <vector <card*>> board::get_group(){
     return group;
 }
 
+void board::set_group(vector <vector<card *>> in){
+	group = in;
+}
+
 void board::print_board(){ // Update
-	for(int i=0;i<num_rows; i++){
-		cout << "GROUP " << i+1;
+	for(int i=1;i<=num_rows; i++){
+		cout << "GROUP " << i << " ";
 		for(size_t j=0; j<group[i].size(); j++){
             // Print Card //
 			group[i][j]->print_card();
+			cout << " ";
 		}
 		cout << endl;
 	}
