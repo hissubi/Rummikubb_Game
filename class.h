@@ -35,7 +35,9 @@ class board{
 		board();
         
         int get_num_rows();
+        void set_num_rows(int);
         vector <vector <card*>> get_group();
+		void set_group(vector <vector <card*>>);
 		
         int check_valid_fin();
 		int group_type_check(int idx);
@@ -58,7 +60,9 @@ class player{
         bool get_is_register();
 		int get_player_id();
         int get_card_num();
+        void set_card_num(int);
         vector<card*> get_card();
+        void set_card(vector<card*>);
 		
         bool is_bigger_by_color(card* a, card* b);
         bool is_bigger_by_number(card* a, card* b);
