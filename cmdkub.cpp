@@ -32,14 +32,10 @@ int main(){
 	for(int i=0;i<8;i++){
 		for(int j=1;j<=13;j++){
 			int id = i*13+j;
-            //cout << table.get_num_rows() << endl;
 			all_cards[id] = card(id,i/2,j);
-            //cout << table.get_num_rows() << endl;
 			deck.push_back(id);
 		}
 	}
-    //cout << table.get_num_rows() << endl;
-
 
 	random_device rd;
 	mt19937 g(rd());
@@ -84,18 +80,41 @@ int main(){
 	for(;; turn++){	
 		int t = turn%num_players+1;
 		cout << "Player " << t << " turn" << endl;
+		bool sort_type = true;
 		while(1){
 			table.print_board();
 			cout << endl;
-			players[t].sort_by_color();
-			cout << "Action : draw_card, move_card, checkpoint, finish" << endl;
+			if(sort_type == true){
+				players[t].sort_by_color();
+			}
+			else{
+				players[t].sort_by_number();
+			}
+			cout << "Action : draw_card, move_card, checkpoint, ";
+			if(sort_type){
+				cout << "sort_by_number, ";
+			}
+			else{
+				cout << "sort_by_color, ";
+			}
+			cout << "finish" << endl;
 			string input;
 			cin >> input;
 			if(input == "draw_card"){
 				int new_card_id = pop_card_from_deck();
-                card* new_card = new card(new_card_id, new_card_id%4, new_card_id%13);
+                //card* new_card = new card(new_card_id, new_card_id%4, new_card_id%13);
+				card* new_card = &all_cards[new_card_id];
+				cout << "drawed ";
+				all_cards[new_card_id].print_card();
+				cout << endl;
+
 				players[t].add_card(new_card);
-				players[t].sort_by_color();
+				if(sort_type){
+					players[t].sort_by_color();
+				}
+				else{
+					players[t].sort_by_number();
+				}
 				break;
 			}
 			else if(input == "move_card"){
@@ -105,20 +124,53 @@ int main(){
 				cout << "to : ";
 				int tgid, toff;
 				cin >> tgid >> toff;
-				if(fgid > table.get_num_rows()+1 || tgid > table.get_num_rows()+1){
+				bool valid_input = true;
+				if(fgid > table.get_num_rows() || tgid > table.get_num_rows()+1){
 					cout << "Invalid group ID" << endl;
+					valid_input = false;
 				}
 				if(fgid < 0 || tgid < 0){
-					cout << "Group ID must be positive or 0";
+					cout << "Group ID must be positive or 0" << endl;
+					valid_input = false;
+				}
+				if(toff < 0 || foff < 0){
+					cout << "Card offset must be positive or 0" << endl;
+					valid_input = false;
 				}
 				if(fgid == 0 && foff > players[t].get_card_num()){
 					cout << "There is no card " << foff << " at player's hand" << endl;
+					valid_input = false;
+				}
+				if(tgid == 0){
+					cout << "You can't move card to your hand!" << endl;
+					valid_input = false;
+				}
+				if(!valid_input){
+					continue;
 				}
 				if(fgid == tgid && foff == toff){
 					cout << "Interesting..." << endl;
 					//actually do nothing
 				}
-				continue;
+				//actual code start
+				vector <vector <card *>> temp = table.get_group();
+				temp[0] = players[t].get_card();
+				card *moving_card = temp[fgid][foff];
+				if(tgid == table.get_num_rows()+1){
+					int new_num_rows = table.get_num_rows() + 1;
+					vector<card *> buf;
+					buf.push_back(moving_card);
+					temp.push_back(buf);
+					table.set_num_rows(new_num_rows);
+				}
+				else{
+					temp[tgid].insert(temp[tgid].begin()+toff,moving_card);
+				}
+				temp[fgid].erase(temp[fgid].begin()+foff);
+				players[t].set_card(temp[0]);
+				players[t].set_card_num(temp[0].size());
+				temp[0].clear();
+				table.set_group(temp);
 			}
             else if(input == "checkpoint"){
                 if(table.check_valid_fin()){
@@ -139,11 +191,16 @@ int main(){
 				}
 				break;
 			}
+			else if(input == "sort_by_number"){
+				sort_type = false;
+			}
+			else if(input == "sort_by_color"){
+				sort_type = true;
+			}
 			else{
 				cout << "Invalid input! Try again." << endl;
 			}
 		}
-        cout << table.get_num_rows() << endl;
         save_log_data(num_players, turn);
 	}
 	/**** todo : check who is winner ****/
@@ -153,7 +210,8 @@ int main(){
 void distribute_initial_card(int player_id){
 	for(int i=0;i<init_card_num;i++){
 		int new_card_id = pop_card_from_deck();
-	    card* new_card = new card(new_card_id, new_card_id%4, new_card_id%13);
+	    //card* new_card = new card(new_card_id, new_card_id%4, new_card_id%13);
+		card *new_card = &all_cards[new_card_id];
 		players[player_id].add_card(new_card);
 	}
 	return;
