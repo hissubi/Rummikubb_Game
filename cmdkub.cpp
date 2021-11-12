@@ -1,4 +1,4 @@
-//#include "cmdkub.h"
+#include "cmdkub.h"
 #include <time.h>
 #include <string>
 #include <random>
@@ -85,8 +85,10 @@ int main(){
 		int t = turn%num_players+1;
 		cout << "Player " << t << " turn" << endl;
 		while(1){
+			table.print_board();
+			cout << endl;
 			players[t].sort_by_color();
-			cout << "Action : draw_card, ??, checkpoint, finish" << endl;
+			cout << "Action : draw_card, move_card, checkpoint, finish" << endl;
 			string input;
 			cin >> input;
 			if(input == "draw_card"){
@@ -96,7 +98,29 @@ int main(){
 				players[t].sort_by_color();
 				break;
 			}
-            if(input == "checkpoint"){
+			else if(input == "move_card"){
+				cout << "from : ";
+				int fgid, foff;
+				cin >> fgid >> foff;
+				cout << "to : ";
+				int tgid, toff;
+				cin >> tgid >> toff;
+				if(fgid > table.get_num_rows()+1 || tgid > table.get_num_rows()+1){
+					cout << "Invalid group ID" << endl;
+				}
+				if(fgid < 0 || tgid < 0){
+					cout << "Group ID must be positive or 0";
+				}
+				if(fgid == 0 && foff > players[t].get_card_num()){
+					cout << "There is no card " << foff << " at player's hand" << endl;
+				}
+				if(fgid == tgid && foff == toff){
+					cout << "Interesting..." << endl;
+					//actually do nothing
+				}
+				continue;
+			}
+            else if(input == "checkpoint"){
                 if(table.check_valid_fin()){
                     cout << "Load previous table..." << endl;
                     players[t].copy(saved_checkpoint.get_player_data(t)); 
@@ -107,13 +131,16 @@ int main(){
                     cout << "Checkpoint saved!" << endl;
                 }
             }
-			/**** todo: other actions ****/
-			if(input == "finish"){
+			else if(input == "finish"){
+				//todo : check if board is valid, if invalid, return to checkpoint
+				if(players[t].get_card_num() == 0){
+					cout << "Winner is Player " << t << "!" << endl;
+					return 0;
+				}
 				break;
 			}
-			if(players[t].get_card_num() == 0){
-				cout << "Winner is Player " << t << "!" << endl;
-				return 0;
+			else{
+				cout << "Invalid input! Try again." << endl;
 			}
 		}
         cout << table.get_num_rows() << endl;
