@@ -18,8 +18,8 @@ void save_log_data(int nplayers, int turn)
     }
     fprintf(log_file, "%d ", table.get_num_rows());
     for(int i = 0; i < table.get_num_rows(); i++) {
-        fprintf(log_file, "%d ", table.get_group().at(i).size());
-        for(int j = 0; j < table.get_group().at(i).size(); j++) {
+        fprintf(log_file, "%lu ", table.get_group().at(i).size());
+        for(size_t j = 0; j < table.get_group().at(i).size(); j++) {
             fprintf(log_file, "%d ", table.get_group().at(i).at(j)->get_id());
         }
     }

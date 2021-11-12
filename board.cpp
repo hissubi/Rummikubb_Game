@@ -16,7 +16,7 @@ vector <vector <card*>> board::get_group(){
 
 void board::print_board(){ // Update
 	for(int i=0;i<num_rows; i++){
-		for(int j=0; j<group[i].size(); j++){
+		for(size_t j=0; j<group[i].size(); j++){
 			
             // Print Card //
 		}
@@ -30,7 +30,7 @@ int board::group_type_check(int idx){
     int value = -1;
     int color_ck = 1;
     int value_ck = 1;
-    for(int i=0; i<group[idx].size(); i++){
+    for(size_t i=0; i<group[idx].size(); i++){
         if(group[idx][i]->value == joker_value) 
             continue;
         if(color == -1) color = group[idx][i]->color;
@@ -77,7 +77,7 @@ int board::check_valid_fin(){
         else if(gtc == 1){
             // Sequence check
             buf = -1;
-            for(int k=0; k<group[i].size(); k++){
+            for(size_t k=0; k<group[i].size(); k++){
                 if(buf == -1){
                     buf = group[i][k]->value;
                     continue;
@@ -103,7 +103,7 @@ int board::check_valid_fin(){
             // Color duplicate check
             buf = -1;
             for(int j=0; j<5; j++) cbuf[j]=0;
-            for(int k=0; k<group[i].size(); k++){
+            for(size_t k=0; k<group[i].size(); k++){
                 if(group[i][k]->value != joker_value){
                     if(buf == -1)
                         buf = group[i][k]->value;
@@ -146,7 +146,7 @@ void board::copy(board a) {
     group.resize(num_rows);
     for(int i = 0; i < num_rows; i++) {
         group[i].resize(a.get_group().at(i).size());
-        for(int j = 0; j < group[i].size(); j++){
+        for(size_t j = 0; j < group[i].size(); j++){
             group[i][j] = a.get_group().at(i).at(j);
         }
     }        

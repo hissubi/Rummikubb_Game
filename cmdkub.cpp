@@ -124,8 +124,6 @@ int main(){
 }
 
 void distribute_initial_card(int player_id){
-	int count = 0;
-
 	for(int i=0;i<init_card_num;i++){
 		int new_card_id = pop_card_from_deck();
 	    card* new_card = new card(new_card_id, new_card_id%4, new_card_id%13);
