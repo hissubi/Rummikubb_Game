@@ -77,7 +77,10 @@ int main(){
         }
     }
     
-	for(;; turn++){	
+    saved_checkpoint.copy_all(players, table);
+    save_log_data(num_players, turn);
+	
+    for(;; turn++){	
 		int t = turn%num_players+1;
 		cout << "Player " << t << " turn" << endl;
 		bool sort_type = true;
@@ -185,11 +188,16 @@ int main(){
             }
 			else if(input == "finish"){
 				//todo : check if board is valid, if invalid, return to checkpoint
-				if(players[t].get_card_num() == 0){
-					cout << "Winner is Player " << t << "!" << endl;
-					return 0;
-				}
-				break;
+				if(table.check_valid_fin()){
+                    cout << "Load previous table..." << endl;
+                    players[t].copy(saved_checkpoint.get_player_data(t)); 
+                    table.copy(saved_checkpoint.get_board_data());
+                }
+                else{
+                    saved_checkpoint.copy(t, players[t], table);
+                    cout << "Checkpoint saved!" << endl;
+                    break;
+                }       
 			}
 			else if(input == "sort_by_number"){
 				sort_type = false;
@@ -201,6 +209,11 @@ int main(){
 				cout << "Invalid input! Try again." << endl;
 			}
 		}
+        if(players[t].get_card_num() == 0){
+			cout << "Winner is Player " << t << "!" << endl;
+			return 0;
+		}
+
         save_log_data(num_players, turn);
 	}
 	/**** todo : check who is winner ****/
