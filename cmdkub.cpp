@@ -148,6 +148,11 @@ int main(){
 					cout << "You can't move card to your hand!" << endl;
 					valid_input = false;
 				}
+                vector <vector <card*>> temp = table.get_group();
+                if( (unsigned) toff >  temp[tgid].size() ){
+                    cout << "You can't put the card there" << endl;
+                    valid_input = false;
+                }
 				if(!valid_input){
 					continue;
 				}
@@ -156,7 +161,7 @@ int main(){
 					//actually do nothing
 				}
 				//actual code start
-				vector <vector <card *>> temp = table.get_group();
+				//vector <vector <card *>> temp = table.get_group();
 				temp[0] = players[t].get_card();
 				card *moving_card = temp[fgid][foff];
 				if(tgid == table.get_num_rows()+1){
