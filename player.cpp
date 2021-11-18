@@ -1,6 +1,6 @@
 #include "class.h"
 #include "extern.h"
-
+#include <ncurses.h>
 
 player::player(){
 	return;
@@ -37,9 +37,15 @@ void player::sort_by_color(){
     }
     for(int i=0; i<card_num; i++){
         hand_card[i]->print_card();
-        cout << " ";                    
+ 		attron(COLOR_PAIR(1));
+	    printw(" ");
+		refresh();
+		attroff(COLOR_PAIR(1));
     }
-    cout << endl; 
+	//attron(COLOR_PAIR(1));
+    printw("\n");
+	refresh();
+	//attroff(COLOR_PAIR(1));
 }
 
 void player::sort_by_number(){
@@ -54,9 +60,11 @@ void player::sort_by_number(){
     } 
     for(int i=0; i<card_num; i++){
         hand_card[i]->print_card();
-        cout << " ";                    
+        printw(" ");
+		refresh();
     }
-    cout << endl; 
+    printw("\n");
+	refresh();
 }
 
 bool player::get_is_register(){

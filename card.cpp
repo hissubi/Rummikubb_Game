@@ -1,5 +1,6 @@
 #include "class.h"
 #include "extern.h"
+#include <ncurses.h>
 
 card::card(){
         return;
@@ -17,9 +18,12 @@ int card::get_id(){
 }
 
 void card::print_card(){
-	set_color(color);
-        cout << value;
-	set_color(4);
+	//set_color(color);
+     //   cout << value;
+	//set_color(4);
+	attron(COLOR_PAIR(color+1));
+	printw("%d", value);
+	attroff(COLOR_PAIR(color+1));
 }
 
 void card::set_loc(int loc_){

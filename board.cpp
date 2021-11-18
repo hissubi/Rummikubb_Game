@@ -1,5 +1,6 @@
 #include "class.h"
 #include "extern.h"
+#include <ncurses.h>
 
 board::board(){
 	group.clear();
@@ -24,13 +25,16 @@ void board::set_group(vector <vector<card *>> in){
 
 void board::print_board(){ // Update
 	for(int i=1;i<=num_rows; i++){
-		cout << "GROUP " << i << " ";
+		printw("\n\n GROUP %d ", i);
+		refresh();
 		for(size_t j=0; j<group[i].size(); j++){
             // Print Card //
 			group[i][j]->print_card();
-			cout << " ";
+			printw(" ");
+			refresh();
 		}
-		cout << endl;
+		printw("\n");
+		refresh();
 	}
 }
 
