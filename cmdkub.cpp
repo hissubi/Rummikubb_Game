@@ -52,6 +52,11 @@ int main(){
 			deck.push_back(id);
 		}
 	}
+	/**** push joker ****/
+	/*all_cards[105] = card(105, joker_value, 5);
+	deck.push_back(105);
+	all_cards[106] = card(106, joker_value, 5);
+	deck.push_back(106);*/
 
 	random_device rd;
 	mt19937 g(rd());
@@ -114,12 +119,16 @@ int main(){
 	saved_checkpoint.copy_all(players, table);
     save_log_data(num_players, turn);
 	
+	noecho();
+
     for(;; turn++){	
 
 		int t = turn%num_players+1;
 			
+		bool can_finish = false;
 		bool sort_type = true;
 		while(1){
+			can_finish = false;
 			clear();
 			attron(A_BOLD | COLOR_PAIR(5));
 			printw("\n     Welcome to Rummikub !!");
@@ -144,7 +153,7 @@ int main(){
 			}
 			printw("\n");
 			refresh();
-			printw(" Select Action & Press 'x' \n 1. Draw_card ");
+			printw(" Select Action & Press Space bar \n 1. Draw_card ");
 			getyx(win, curr_x[1], curr_y[1]);
 			printw(" \n 2. Move_card ");
 			getyx(win, curr_x[2], curr_y[2]);
@@ -169,7 +178,7 @@ int main(){
 			int ch;
 			int select = 1;
 			keypad(win, TRUE);
-			while( (ch = getch()) != 'x' ){
+			while( (ch = getch()) != ' ' ){
 				switch(ch) {
 	            case KEY_UP:
 					if(select == 1) break;
@@ -191,18 +200,21 @@ int main(){
 // Menu Case =====================================================================//
 			
 			mvinsch(curr_x[0], curr_y[0], '\n');
-			printw("\n Your Select : ");
+			printw("\n Your Selection : ");
 			if(select == 1) printw("Draw_card!");
 			if(select == 2) printw("Move_card!");
 			if(select == 3) printw("Checkpoint!");
 			if(select == 4 && sort_type == true) printw("Sort_by_Number!");
 			if(select == 4 && sort_type == false) printw("Sort_by_Color!");
-			if(select == 5) printw("Draw_card!");
+			if(select == 5) printw("Finish!");
 			printw("\n\n");
 			refresh();
 			
 			if(select == 1){
 			// 1: Draw Card
+				if(can_finish){
+					printw(" You can't draw after moving card!\n");
+				}
 				int new_card_id = pop_card_from_deck();
 				card* new_card = &all_cards[new_card_id];
 				printw(" Drawed "); 
@@ -235,6 +247,7 @@ int main(){
 				toff = getch()-48;
 				printw("\n");
 				refresh();
+				
 				bool valid_input = true;
 				if(fgid > table.get_num_rows() || tgid > table.get_num_rows()+1){
 					printw(" Invalid group ID\n");
@@ -293,6 +306,7 @@ int main(){
 				players[t].set_card_num(temp[0].size());
 				temp[0].clear();
 				table.set_group(temp);	
+				can_finish = true;
 
 				printw("\n Press Any Key...\n");
 				getch();
@@ -310,12 +324,20 @@ int main(){
 					refresh();
                 }	
 
+
 				printw("\n Press Any Key...\n");
 				getch();
-
             }
 			else if(select == 5){
 				//todo : check if board is valid, if invalid, return to checkpoint
+				if(!can_finish){
+					printw(" Can't finish yet\n");
+					refresh();
+				
+					printw("\n Press Any Key...\n");
+					getch();
+					continue;
+				}
 				if(table.check_valid_fin()){
                     printw(" Load previous table...\n");
 					refresh();
