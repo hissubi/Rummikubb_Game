@@ -70,6 +70,9 @@ void player::sort_by_number(){
 bool player::get_is_register(){
     return is_register;
 }
+void player::set_is_register(bool in){
+	is_register = in;
+}
 int player::get_player_id(){
     return player_id;
 }

@@ -58,6 +58,7 @@ class player{
 		player(int id);
         
         bool get_is_register();
+		void set_is_register(bool in);
 		int get_player_id();
         int get_card_num();
         void set_card_num(int);
