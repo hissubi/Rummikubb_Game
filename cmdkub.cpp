@@ -142,6 +142,13 @@ int main(){
 			refresh();
 			
 			table.print_board();
+			
+			/**** print blank group that player can use to make new group ****/
+			printw("\n\n");
+			printw("GID% -2d\n", table.get_num_rows()+1);
+			printw("\n");
+			/********/
+
 			printw("\n");
 			printw(" HAND ");
 			refresh();
@@ -214,6 +221,9 @@ int main(){
 			// 1: Draw Card
 				if(can_finish){
 					printw(" You can't draw after moving card!\n");
+					printw("\n Press Any Key...\n");
+					getch();
+					continue;
 				}
 				int new_card_id = pop_card_from_deck();
 				card* new_card = &all_cards[new_card_id];
@@ -235,18 +245,88 @@ int main(){
 			}
 			else if(select == 2){
 			// 2: Move Card
-				printw(" From : "); refresh();
-				int fgid, foff;
+				int fgid , foff = 0;
+				int tgid, toff = 0;
+				int vbase_x = 8;
+				int vbase_y = 7;
+				int starting_x = 8;
+				int starting_y = 13 + table.get_num_rows() * 3;
+				int current_x = starting_x;
+				int current_y = starting_y;
+				mvinsch(current_y, current_x, '<');
+				int phase = 0;
+				while( (ch = getch()) != 'q'){
+					switch(ch) {
+		            case KEY_UP:
+						if(current_y -3 == vbase_y){
+							break;
+						}
+						mvdelch(current_y, current_x);
+	     		        current_y -= 3;
+						mvinsch(current_y, current_x, '<');
+						break;
+		            case KEY_DOWN:
+						if(current_y== starting_y){
+							break;
+						}
+						mvdelch(current_y, current_x);
+	     		        current_y += 3;
+						mvinsch(current_y, current_x, '<');
+		                break;
+					case KEY_LEFT:
+						if(current_x == vbase_x - 3*phase){
+							break;
+						}
+						mvdelch(current_y, current_x);
+	     		        current_x -= 3;
+						mvinsch(current_y, current_x, '<');
+						break;
+					case KEY_RIGHT:
+						mvdelch(current_y, current_x);
+	     		        current_x += 3;
+						mvinsch(current_y, current_x, '<');
+						break;
+					case ' ':
+						if(current_y == starting_y){
+							fgid = 0;
+						}
+						else{
+							fgid = (((current_y - vbase_y) )/3);
+						}
+						foff = (current_x - vbase_x) / 3;
+						phase = 1;
+						break;
+					case '\n':
+						if(current_y == starting_y){
+							tgid = 0;
+						}
+						else{
+							tgid = (((current_y - vbase_y) )/3);
+						}
+							toff = (current_x - vbase_x +3 ) / 3;
+						if(phase == 1){
+							goto val_check;
+						}
+						else{
+							break;
+						}
+					default:
+						break;
+					}
+				}
+				val_check:
+				/*printw(" From : "); refresh();
 				fgid = getch()-48;
 				getch();
 				foff = getch()-48;
 				printw("\n To : "); refresh();
-				int tgid, toff;
 				tgid = getch()-48;
 				getch();
 				toff = getch()-48;
 				printw("\n");
 				refresh();
+
+				getch();*/
 				
 				bool valid_input = true;
 				if(fgid > table.get_num_rows() || tgid > table.get_num_rows()+1){
@@ -281,6 +361,8 @@ int main(){
                     valid_input = false;
                 }
 				if(!valid_input){
+					refresh();
+					getch();
 					continue;
 				}
 				if(fgid == tgid && foff == toff){
@@ -307,9 +389,6 @@ int main(){
 				temp[0].clear();
 				table.set_group(temp);	
 				can_finish = true;
-
-				printw("\n Press Any Key...\n");
-				getch();
 			}
             else if(select == 3){
                 if(table.check_valid_fin()){

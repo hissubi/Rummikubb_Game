@@ -24,8 +24,8 @@ void board::set_group(vector <vector<card *>> in){
 }
 
 void board::print_board(){ // Update
-	for(int i=1;i<=num_rows; i++){
-		printw("\n\n GROUP %d ", i);
+	for(int i=1;i<=num_rows;i++){
+		printw("\n\nGID %-2d", i);
 		refresh();
 		for(size_t j=0; j<group[i].size(); j++){
             // Print Card //

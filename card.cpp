@@ -22,7 +22,7 @@ void card::print_card(){
      //   cout << value;
 	//set_color(4);
 	attron(COLOR_PAIR(color+1));
-	printw("%d", value);
+	printw("%2d", value);
 	attroff(COLOR_PAIR(color+1));
 }
 
