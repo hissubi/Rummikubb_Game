@@ -152,6 +152,9 @@ int board::check_valid_fin(){
 }
 
 void board::copy(board a) {
+    
+    group = a.get_group(); 
+    /*
     num_rows = a.get_num_rows();
     group.resize(num_rows);
     for(int i = 0; i < num_rows; i++) {
@@ -159,6 +162,6 @@ void board::copy(board a) {
         for(size_t j = 0; j < group[i].size(); j++){
             group[i][j] = a.get_group().at(i).at(j);
         }
-    }        
+    } */       
 }
 

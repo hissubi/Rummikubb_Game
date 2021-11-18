@@ -10,7 +10,7 @@ checkpoint:: checkpoint(int nplayer_){
 
 void checkpoint:: set_nplayer(int nplayer_){
     if(player_data != NULL) delete [] player_data;
-    player_data = new player[nplayer_];
+    player_data = new player[nplayer_+1];
     nplayer = nplayer_;
 }
 player checkpoint:: get_player_data(int player_num){

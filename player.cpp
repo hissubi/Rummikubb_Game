@@ -86,9 +86,11 @@ void player::copy(player p){
     is_register = p.get_is_register();
     player_id = p.get_player_id();
     card_num = p.get_card_num();
+    hand_card = p.get_card();
+    /*
     hand_card.resize(card_num);
     for(int i = 0; i < card_num; i++){
         hand_card[i] = p.get_card().at(i);
-    }
+    }*/
 }
 
