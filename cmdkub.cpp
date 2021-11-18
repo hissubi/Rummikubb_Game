@@ -118,6 +118,7 @@ int main(){
 
 		int t = turn%num_players+1;
 			
+		bool sort_type = true;
 		while(1){
 			clear();
 			attron(A_BOLD | COLOR_PAIR(5));
@@ -130,7 +131,6 @@ int main(){
 			printw("    Player %d turn\n", t);
 			printw("**********************\n\n");
 			refresh();
-			bool sort_type = true;
 			
 			table.print_board();
 			printw("\n");
@@ -183,6 +183,8 @@ int main(){
 					select++;
 					mvinsch(curr_x[select], curr_y[select], '<');
 	                break;
+				default:
+					break;
 		        }
 			}
 
@@ -330,10 +332,6 @@ int main(){
 			else if(select == 4){
 				if( sort_type == false) sort_type = true;
 				else sort_type = false;
-
-				printw("\n Press Any Key...\n");
-				getch();
-
 			}	
 			else{
 				printw(" Invalid input! Try again.\n");
