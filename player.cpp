@@ -37,15 +37,11 @@ void player::sort_by_color(){
     }
     for(int i=0; i<card_num; i++){
         hand_card[i]->print_card();
- 		attron(COLOR_PAIR(1));
 	    printw(" ");
 		refresh();
-		attroff(COLOR_PAIR(1));
     }
-	//attron(COLOR_PAIR(1));
     printw("\n");
 	refresh();
-	//attroff(COLOR_PAIR(1));
 }
 
 void player::sort_by_number(){

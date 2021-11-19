@@ -285,6 +285,10 @@ int main(){
 						mvinsch(current_y, current_x, '<');
 						break;
 					case KEY_RIGHT:
+						if(phase == 0 &&
+								current_x == vbase_x + 3*players[t].get_card_num() - 3){
+							break;
+						}
 						mvdelch(current_y, current_x);
 	     		        current_x += 3;
 						mvinsch(current_y, current_x, '<');
