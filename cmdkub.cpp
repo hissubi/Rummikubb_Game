@@ -125,11 +125,11 @@ int main(){
 
 		int t = turn%num_players+1;
 			
-		bool can_finish = false;
-		bool sort_type = true;
+		int state = 0;
+        bool sort_type = true;
+
 		while(1){
-			can_finish = false;
-			clear();
+            clear();
 			attron(A_BOLD | COLOR_PAIR(5));
 			printw("\n     Welcome to Rummikub !!");
 		   	attron(A_BLINK);
@@ -219,7 +219,7 @@ int main(){
 			
 			if(select == 1){
 			// 1: Draw Card
-				if(can_finish){
+				if(state != 0){
 					printw(" You can't draw after moving card!\n");
 					printw("\n Press Any Key...\n");
 					getch();
@@ -245,6 +245,9 @@ int main(){
 			}
 			else if(select == 2){
 			// 2: Move Card
+                if(state == 0) state = 1;
+                else if(state == 2) state = 3;
+
 				int fgid , foff = 0;
 				int tgid, toff = 0;
 				int vbase_x = 8;
@@ -388,47 +391,65 @@ int main(){
 				players[t].set_card_num(temp[0].size());
 				temp[0].clear();
 				table.set_group(temp);	
-				can_finish = true;
 			}
             else if(select == 3){
-                if(table.check_valid_fin()){
-                    printw(" Load previous table...\n");
-					refresh();
-                    players[t].copy(saved_checkpoint.get_player_data(t)); 
-                    table.copy(saved_checkpoint.get_board_data());
+                if(state == 0) {
+                    printw(" You can make checkpoint after making a new group!\n");
+                    refresh();
+                }
+                else if(state == 2){
+                    printw("Checkpoint is up to date.\n");
                 }
                 else{
-                    saved_checkpoint.copy(t, players[t], table);
-                    printw(" Checkpoint saved!\n");
-					refresh();
-                }	
-
+                    if(table.check_valid_fin()){
+                        printw(" Load previous table...\n");
+					    refresh();
+                        players[t].copy(saved_checkpoint.get_player_data(t)); 
+                        table.copy(saved_checkpoint.get_board_data());
+                        if(state == 1) {
+                            state = 0;
+                        }
+                        else if(state == 3) {
+                            state = 2;
+                        }
+                    }
+                    else{
+                        saved_checkpoint.copy(t, players[t], table);
+                        printw(" Checkpoint saved!\n");
+					    refresh();
+                        state = 2;
+                    }	
+                }
 
 				printw("\n Press Any Key...\n");
 				getch();
             }
 			else if(select == 5){
 				//todo : check if board is valid, if invalid, return to checkpoint
-				if(!can_finish){
+				if(state == 0){
 					printw(" Can't finish yet\n");
 					refresh();
-				
-					printw("\n Press Any Key...\n");
-					getch();
-					continue;
 				}
-				if(table.check_valid_fin()){
-                    printw(" Load previous table...\n");
-					refresh();
-                    players[t].copy(saved_checkpoint.get_player_data(t)); 
-                    table.copy(saved_checkpoint.get_board_data());
-                }
                 else{
-                    saved_checkpoint.copy(t, players[t], table);
-                    printw(" Checkpoint saved!\n");
-					refresh();
-                    break;
-                }       
+				    if(table.check_valid_fin()){
+                        printw(" Load previous table...\n");
+					    refresh();
+                        players[t].copy(saved_checkpoint.get_player_data(t)); 
+                        table.copy(saved_checkpoint.get_board_data());
+                        if(state == 1) {
+                            state = 0;
+                        }
+                        else if(state == 3){
+                            state = 2;
+                        }       
+                    }
+                    else{
+                        saved_checkpoint.copy(t, players[t], table);
+                        break;
+                    }    
+                }   
+				printw("\n Press Any Key...\n");
+				getch();
 			}
 			else if(select == 4){
 				if( sort_type == false) sort_type = true;
@@ -440,10 +461,18 @@ int main(){
 			}
 		}
         if(players[t].get_card_num() == 0){
-			printw(" Winner is Player %d!\n",t);
+			clear();
+            printw(" Winner is Player %d!\n",t);
 			refresh();
 			return 0;
 		}
+        
+        clear();
+        printw("\n Player %d turn finished! Change your seat with Player %d!\n", t, t%num_players+1);
+		printw("\n Press Any Key...\n");
+		refresh();
+        getch();
+
 
         save_log_data(num_players, turn);
 	}
