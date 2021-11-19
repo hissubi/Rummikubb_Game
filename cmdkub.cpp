@@ -145,12 +145,12 @@ int main(){
 			
 			/**** print blank group that player can use to make new group ****/
 			printw("\n\n");
-			printw("GID% -2d\n", table.get_num_rows()+1);
+			printw("GID% -2d \n", table.get_num_rows()+1);
 			printw("\n");
 			/********/
 
 			printw("\n");
-			printw(" HAND ");
+			printw("HAND   ");
 			refresh();
 			if(sort_type == true){
 				players[t].sort_by_color();
@@ -250,9 +250,9 @@ int main(){
 
 				int fgid , foff = 0;
 				int tgid, toff = 0;
-				int vbase_x = 8;
+				int vbase_x = 9;
 				int vbase_y = 7;
-				int starting_x = 8;
+				int starting_x = 9;
 				int starting_y = 13 + table.get_num_rows() * 3;
 				int current_x = starting_x;
 				int current_y = starting_y;
@@ -339,22 +339,22 @@ int main(){
 				getch();*/
 				
 				bool valid_input = true;
-				if(fgid > table.get_num_rows() || tgid > table.get_num_rows()+1){
+				if(fgid > table.get_num_rows() || tgid > table.get_num_rows()+1){	//can't
 					printw(" Invalid group ID\n");
 					refresh();
 					valid_input = false;
 				}
-				if(fgid < 0 || tgid < 0){
+				if(fgid < 0 || tgid < 0){	//can't
 					printw(" Group ID must be positive or 0\n");
 					refresh();
 					valid_input = false;
 				}
-				if(toff < 0 || foff < 0){
+				if(toff < 0 || foff < 0){	//can't
 					printw(" Card offset must be positive or 0\n");
 					refresh();
 					valid_input = false;
 				}
-				if(fgid == 0 && foff > players[t].get_card_num()){
+				if(fgid == 0 && foff > players[t].get_card_num()){	//can't
 					printw(" There is no card %d at player's hand", foff);
 					refresh();
 					valid_input = false;
@@ -365,10 +365,8 @@ int main(){
 					valid_input = false;
 				}
                 vector <vector <card*>> temp = table.get_group();
-                if( (unsigned) toff >  temp[tgid].size() ){
-                    printw(" You can't put the card there\n");
-					refresh();
-                    valid_input = false;
+                if( (unsigned) toff >  temp[tgid].size() ){			//pull card
+					toff = temp[tgid].size();
                 }
 				if(!valid_input){
 					refresh();
