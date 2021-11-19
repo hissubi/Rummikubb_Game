@@ -60,7 +60,8 @@ class player{
         bool get_is_register();
 		void set_is_register(bool in);
 		int get_player_id();
-        int get_card_num();
+        void set_player_id(int id_);
+		int get_card_num();
         void set_card_num(int);
         vector<card*> get_card();
         void set_card(vector<card*>);

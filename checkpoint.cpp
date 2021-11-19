@@ -10,8 +10,15 @@ checkpoint:: checkpoint(int nplayer_){
 
 void checkpoint:: set_nplayer(int nplayer_){
     if(player_data != NULL) delete [] player_data;
-    player_data = new player[nplayer_+1];
+	player_data = new player[nplayer_+1];
     nplayer = nplayer_;
+	for(int i = 0; i < nplayer+1; i++)
+	{
+		player_data[i].set_player_id(i);
+		player_data[i].set_is_register(false);
+		player_data[i].set_card_num(0);
+		player_data[i].get_card().clear();
+	}
 }
 player checkpoint:: get_player_data(int player_num){
     return player_data[player_num];
