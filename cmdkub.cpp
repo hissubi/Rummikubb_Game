@@ -78,7 +78,7 @@ int main(){
         if(load[0] == 'y') {
             
             load_log_data(num_players, turn);
-            printw("Load game state!\n");
+            printw("Load game starts!\n");
 			printw("\n"); refresh();
 			break;
         }
@@ -106,6 +106,7 @@ int main(){
 		        players[i] = player(i);
 		        distribute_initial_card(i);
 	        }
+            save_log_data(num_players, turn);
             break;
         }
         else {
@@ -117,7 +118,6 @@ int main(){
 // Start Game ===========================================================//
     
 	saved_checkpoint.copy_all(players, table);
-    save_log_data(num_players, turn);
 	
 	noecho();
 
@@ -472,14 +472,13 @@ int main(){
 			return 0;
 		}
         
+        save_log_data(num_players, turn);
+        
         clear();
         printw("\n Player %d turn finished! Change your seat with Player %d!\n", t, t%num_players+1);
 		printw("\n Press Any Key...\n");
 		refresh();
         getch();
-
-
-        save_log_data(num_players, turn);
 	}
 	/**** todo : check who is winner ****/
 	return 0;

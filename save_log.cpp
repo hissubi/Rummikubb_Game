@@ -4,8 +4,14 @@
 void save_log_data(int nplayers, int turn)
 {
     FILE* log_file = fopen("Logfile.txt", "w");
-    fprintf(log_file, "%d %d ", nplayers, turn+1);
-    for(int i = 0; i < nplayers; i++)
+    if(!turn){
+        fprintf(log_file, "%d %d ", nplayers, turn);
+    }
+    else{
+        fprintf(log_file, "%d %d ", nplayers, turn+1);
+    }
+
+    for(int i = 1; i < nplayers+1; i++)
     {
         fprintf(log_file, "%d ", i);
         if(players[i].get_is_register()) fprintf(log_file, "1 ");
@@ -29,9 +35,9 @@ void save_log_data(int nplayers, int turn)
 void load_log_data(int& nplayers, int& turn)
 {
     FILE* log_file = fopen("Logfile.txt", "r");
-    fscanf(log_file, "%d %d ", &nplayers, &turn);
+    fscanf(log_file, "%d %d", &nplayers, &turn);
 
-    for(int i = 0; i < nplayers; i++)
+    for(int i = 1; i < nplayers+1; i++)
     {
         int now_player, is_register;
         fscanf(log_file, "%d %d", &now_player, &is_register);
@@ -42,7 +48,7 @@ void load_log_data(int& nplayers, int& turn)
         for(int j = 0; j < players[i].card_num; j++) {
             int card_id;
             fscanf(log_file, "%d", &card_id);
-            card* load_card = new card(card_id, card_id%4, card_id%13);
+            card* load_card = &all_cards[card_id];
             players[i].hand_card.push_back(load_card);
         }
     }
@@ -56,7 +62,7 @@ void load_log_data(int& nplayers, int& turn)
         for(int j = 0; j < group_size; j++) {
             int card_id;
             fscanf(log_file, "%d", &card_id);
-            card* newcard = new card(card_id, card_id%4, card_id%13); // need to fix color value calculating
+            card* newcard = &all_cards[card_id]; 
             table.group[i].push_back(newcard);
         }
     }
