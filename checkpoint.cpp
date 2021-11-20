@@ -5,7 +5,7 @@ checkpoint:: checkpoint(){
 }
 checkpoint:: checkpoint(int nplayer_){
     nplayer = nplayer_;
-    player_data = new player[nplayer];
+    player_data = new player[nplayer+1];
 }
 
 void checkpoint:: set_nplayer(int nplayer_){
@@ -32,7 +32,7 @@ void checkpoint:: copy(int player_num, player p, board b){
     board_data.copy(b);
 }
 void checkpoint:: copy_all(player* p, board b){
-    for(int i = 0; i < nplayer; i++){
+    for(int i = 1; i < nplayer+1; i++){
         player_data[i].copy(p[i]);
     }
     board_data.copy(b);
