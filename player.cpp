@@ -9,6 +9,7 @@ player::player(){
 player::player(int id_){
 	player_id = id_;
 	card_num = 0;
+	is_register = false;
 }
 
 bool player::is_bigger_by_color(card* a, card* b){
