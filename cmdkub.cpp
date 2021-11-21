@@ -267,6 +267,7 @@ int main(){
 				else{
 					players[t].sort_by_number();
 				}
+                saved_checkpoint.copy(t, players[t], table);
 				printw("\n Press Any Key...\n");
 				getch();
 				break;
