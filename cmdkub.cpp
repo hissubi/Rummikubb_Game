@@ -267,6 +267,7 @@ int main(){
 			}
 			else if(select == 2){
 			// 2: Move Card
+				printw(" Press 'q' to quit Move_card\n");
                 if(state == 0) state = 1;
                 else if(state == 2) state = 3;
 
@@ -345,6 +346,9 @@ int main(){
 					default:
 						break;
 					}
+				}
+				if(ch == 'q'){
+					continue;
 				}
 				val_check:
 				/*printw(" From : "); refresh();
