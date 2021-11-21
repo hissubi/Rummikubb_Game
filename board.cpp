@@ -25,7 +25,9 @@ void board::set_group(vector <vector<card *>> in){
 
 void board::print_board(){ // Update
 	for(int i=1;i<=num_rows;i++){
-		printw("\n\nGID %-2d ", i);
+		attron(A_BOLD);
+		printw("\n\n GID %-2d ", i);
+		attroff(A_BOLD);
 		refresh();
 		for(size_t j=0; j<group[i].size(); j++){
             // Print Card //
@@ -70,11 +72,14 @@ int board::check_valid_fin(){
     
     int N_Group = group.size();
     
+	attron(A_BOLD | COLOR_PAIR(1));
     // 1 : Group Member Violation
     for(int i=1; i<N_Group; i++){
         if(group[i].size() < 3){
-            cout << "Invalid type 01 : Too-Small Group\n";
-            cout << "Group Num : " << i << endl;
+            printw(" Invalid type 01 : Too-Small Group");
+            printw(" ( GID : %d )\n",i);
+			attroff(A_BOLD | COLOR_PAIR(1));
+			refresh();
             return 1;
         }
     }
@@ -84,8 +89,10 @@ int board::check_valid_fin(){
         int buf;
         int cbuf[5];
         if(gtc == 3){
-            cout << "Invalid type 02 : Unknown Grouping\n";
-            cout << "Group Num : " << i << endl;
+            printw(" Invalid type 02 : Unknown Grouping");
+            printw(" ( GID : %d )\n",i);
+			attroff(A_BOLD | COLOR_PAIR(1));
+			refresh();
             return 2;
         }
         else if(gtc == 1){
@@ -108,8 +115,10 @@ int board::check_valid_fin(){
                     buf = buf + 1;
                     continue;
                 }
-                cout << "Invalid type 03 : Sequence Violation\n";
-                cout << "Group Num : " << i << endl;
+                printw(" invalid type 03 : Sequence Violation");
+            	printw(" ( GID : %d )\n",i);
+				attroff(A_BOLD | COLOR_PAIR(1));
+				refresh();
                 return 3;
             }
         }
@@ -123,8 +132,10 @@ int board::check_valid_fin(){
                         buf = group[i][k]->value;
                     else{
                         if(buf != group[i][k]->value){
-                            cout << "Invalid type 04 : Not Same-Value\n";
-                            cout << "Group Num : " << i << endl;
+                            printw(" Invalid type 04 : Not Same-Value");
+            				printw(" ( GID : %d )\n",i);
+							attroff(A_BOLD | COLOR_PAIR(1));
+							refresh();
                             return 4;
                         }
                     }
@@ -137,21 +148,27 @@ int board::check_valid_fin(){
             int cnt=0;
             for(int k=1; k<5; k++){
                 if(cbuf[k] > 1){
-                    cout << "Invalid type 05 : Color Duplication\n";
-                    cout << "Group Num : " << i << endl;
+                    printw(" Invalid type 05 : Color Duplication");
+            		printw(" ( GID : %d )\n",i);
+					attroff(A_BOLD | COLOR_PAIR(1));
+					refresh();
                     return 5;
                 }
                 if(cbuf[k] == 1) cnt++;
             }
             if(cnt + cbuf[0] > 4){
-                cout << "Invalid type 06 : Cannot Match Joker\n";
-                cout << "Group Num : " << i << endl;
+                printw(" Invalid type 06 : Cannot Match Joker");
+           		printw(" ( GID : %d )\n",i);
+				attroff(A_BOLD | COLOR_PAIR(1));
+				refresh();
                 return 6;
             }
         }
     }
-
-    cout << "Board Check Complete\n";
+	attron(A_BOLD | COLOR_PAIR(2));
+    printw(" Board Check Complete\n");
+	refresh();
+	attroff(COLOR_PAIR(2));
 	return 0;
 }
 

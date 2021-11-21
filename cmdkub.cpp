@@ -44,6 +44,8 @@ int main(){
 	init_pair(4, COLOR_BLUE, COLOR_BLACK);
 	init_pair(5, COLOR_GREEN, COLOR_BLACK);
 	init_pair(6, COLOR_WHITE, COLOR_BLACK);
+	init_color(COLOR_MAGENTA, 488, 950, 800);
+	init_pair(7, COLOR_MAGENTA, COLOR_BLACK);
 
 	for(int i=0;i<8;i++){
 		for(int j=1;j<=13;j++){
@@ -71,32 +73,31 @@ int main(){
     while(1)
     {
         printw("\n");
-		printw("Do you want to load the game? (y/n) ");
+		printw(" Do you want to load the game? (y/n) ");
 		refresh();
 		getstr(load);
 		printw("\n"); refresh();
         if(load[0] == 'y') {
             
             load_log_data(num_players, turn);
-            printw("Load game starts!\n");
+            printw(" Load game starts!\n");
 			printw("\n"); refresh();
 			break;
         }
         else if(load[0] == 'n') {
             while(1)
             {
-	            printw("Enter Players number : ");
+	            printw(" Enter Players number : ");
 				refresh();
 				getstr(ncurse_tmp);
 				printw("\n"); refresh();
 				num_players = atoi(ncurse_tmp);
 				if(num_players < 2){
-	            	printw("There must be 2 or more players!\n");
+	            	printw(" There must be 2 or more players!\n");
 					refresh();
 				}
 	            else if(num_players > 4){
-		            cout << "Maximum players is 4!" << endl;
-	            	printw("Maximum players is 4!\n");
+	            	printw(" Maximum players is 4!\n");
 					refresh();
 				}
                 else break;
@@ -110,7 +111,7 @@ int main(){
             break;
         }
         else {
-			printw("Invalid input! Try again.\n");
+			printw(" Invalid input! Try again.\n");
 			refresh();
         }
     }
@@ -136,21 +137,27 @@ int main(){
 			printw("  (^_^)\n");
 			attroff(A_BOLD | A_BLINK | COLOR_PAIR(5));
 			refresh();
-			printw("\n\n**********************\n");
-			printw("    Player %d turn\n", t);
-			printw("**********************\n\n");
+			printw("\n\n   *****************************\n");
+			attron(A_BOLD | COLOR_PAIR(3));
+			printw("   *       Player %d turn       *\n", t);
+			attroff(A_BOLD | COLOR_PAIR(3));
+			printw("   *****************************\n\n");
 			refresh();
 			
 			table.print_board();
 			
 			/**** print blank group that player can use to make new group ****/
 			printw("\n\n");
-			printw("GID% -2d \n", table.get_num_rows()+1);
+			attron(A_BOLD);
+			printw(" GID% -2d \n", table.get_num_rows()+1);
+			attroff(A_BOLD);
 			printw("\n");
 			/********/
 
 			printw("\n");
-			printw("HAND   ");
+			attron(A_BOLD);
+			printw(" HAND   ");
+			attroff(A_BOLD);
 			refresh();
 			if(sort_type == true){
 				players[t].sort_by_color();
@@ -160,25 +167,40 @@ int main(){
 			}
 			printw("\n");
 			refresh();
-			printw(" Select Action & Press Space bar \n 1. Draw_card ");
+			attron(A_BOLD);
+			//printw("\n ----------------------------------- \n | ");
+			printw("\n   | ");
+			attron(COLOR_PAIR(7));
+			printw(" Select Action & Press Space bar  ");
+			attroff(COLOR_PAIR(7));
+			printw("|\n   |  1. Draw_card ");
 			getyx(win, curr_x[1], curr_y[1]);
-			printw(" \n 2. Move_card ");
+			printw("\t\t       |");
+			printw(" \n   |  2. Move_card ");
 			getyx(win, curr_x[2], curr_y[2]);
-			printw(" \n 3. Checkpoint ");
+			printw("\t\t       |");
+			printw(" \n   |  3. Checkpoint ");
 			getyx(win, curr_x[3], curr_y[3]);
+			printw("\t\t       |");
 			if(sort_type){
-				printw(" \n 4. Sort_by_number ");
+				printw(" \n   |  4. Sort_by_number ");
+				getyx(win, curr_x[4], curr_y[4]);
+				printw("\t       |");
 			}
 			else{
-				printw(" \n 4. Sort_by_color ");
+				printw(" \n   |  4. Sort_by_color ");
+				getyx(win, curr_x[4], curr_y[4]);
+				printw("\t\t       |");
 			}
-			getyx(win, curr_x[4], curr_y[4]);
-			printw(" \n 5. Finish ");
+			printw(" \n   |  5. Finish ");
 			getyx(win, curr_x[5], curr_y[5]);
+			printw("\t\t       |");
 			printw(" \n");
+			//printw(" ----------------------------------- \n");
+			attroff(A_BOLD);
 			refresh();
 			getyx(win, curr_x[0], curr_y[0]);
-			mvinsch(curr_x[1], curr_y[1], '<');
+			mvaddch(curr_x[1], curr_y[1], '<');
 
 // Select with Keyboard ============================================================//			
 
@@ -189,15 +211,15 @@ int main(){
 				switch(ch) {
 	            case KEY_UP:
 					if(select == 1) break;
-					mvdelch(curr_x[select], curr_y[select]);
+					mvaddch(curr_x[select], curr_y[select], ' ');
 	                select--;
-					mvinsch(curr_x[select], curr_y[select], '<');
+					mvaddch(curr_x[select], curr_y[select], '<');
 					break;
 	            case KEY_DOWN:
 					if(select == 5) break;
-					mvdelch(curr_x[select], curr_y[select]);
+					mvaddch(curr_x[select], curr_y[select], ' ');
 					select++;
-					mvinsch(curr_x[select], curr_y[select], '<');
+					mvaddch(curr_x[select], curr_y[select], '<');
 	                break;
 				default:
 					break;
@@ -250,9 +272,9 @@ int main(){
 
 				int fgid , foff = 0;
 				int tgid, toff = 0;
-				int vbase_x = 9;
+				int vbase_x = 10;
 				int vbase_y = 7;
-				int starting_x = 9;
+				int starting_x = 10;
 				int starting_y = 13 + table.get_num_rows() * 3;
 				int current_x = starting_x;
 				int current_y = starting_y;

@@ -18,9 +18,6 @@ int card::get_id(){
 }
 
 void card::print_card(){
-	//set_color(color);
-     //   cout << value;
-	//set_color(4);
 	attron(COLOR_PAIR(color+1));
 	printw("%2d", value);
 	attroff(COLOR_PAIR(color+1));
