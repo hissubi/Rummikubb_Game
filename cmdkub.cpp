@@ -77,11 +77,12 @@ int main(){
 		refresh();
 		getstr(load);
 		printw("\n"); refresh();
-        if(load[0] == 'y') {
-            
+        if(load[0] == 'y') {        
+
             load_log_data(num_players, turn);
             printw(" Load game starts!\n");
 			printw("\n"); refresh();
+			//todo : rearrange deck
 			break;
         }
         else if(load[0] == 'n') {
@@ -121,10 +122,6 @@ int main(){
 	saved_checkpoint.copy_all(players, table);
 	
 	noecho();
-
-	for(int i=1;i<=num_players;i++){
-		players[i].set_is_register(false);
-	}
 
     for(;; turn++){	
 
