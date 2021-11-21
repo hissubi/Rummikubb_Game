@@ -122,6 +122,10 @@ int main(){
 	
 	noecho();
 
+	for(int i=1;i<=num_players;i++){
+		players[i].set_is_register(false);
+	}
+
     for(;; turn++){	
 
 		int t = turn%num_players+1;
@@ -129,6 +133,8 @@ int main(){
 		int state = 0;
         bool sort_type = true;
 
+		int initial_GID = table.get_num_rows();
+		
 		while(1){
             clear();
 			attron(A_BOLD | COLOR_PAIR(5));
@@ -268,8 +274,7 @@ int main(){
 			else if(select == 2){
 			// 2: Move Card
 				printw(" Press 'q' to quit Move_card\n");
-                if(state == 0) state = 1;
-                else if(state == 2) state = 3;
+				
 
 				int fgid , foff = 0;
 				int tgid, toff = 0;
@@ -280,7 +285,7 @@ int main(){
 				int current_x = starting_x;
 				int current_y = starting_y;
 				mvinsch(current_y, current_x, '<');
-				int phase = 0;
+				int phase = 0;	//input phase
 				while( (ch = getch()) != 'q'){
 					switch(ch) {
 		            case KEY_UP:
@@ -390,6 +395,10 @@ int main(){
 					refresh();
 					valid_input = false;
 				}
+				if(players[t].get_is_register() == false && tgid <= initial_GID && tgid != 0){
+					printw(" You can't manipulate board's groups before register!\n");
+					valid_input = false;
+				}
                 vector <vector <card*>> temp = table.get_group();
                 if( (unsigned) toff >  temp[tgid].size() ){			//pull card
 					toff = temp[tgid].size();
@@ -405,6 +414,8 @@ int main(){
 					//actually do nothing
 				}
 				//actual code start
+                if(state == 0) state = 1;
+                else if(state == 2) state = 3;
 				temp[0] = players[t].get_card();
 				card *moving_card = temp[fgid][foff];
 				if(tgid == table.get_num_rows()+1){
@@ -424,6 +435,34 @@ int main(){
 				table.set_group(temp);	
 			}
             else if(select == 3){
+				if(players[t].get_is_register() == false){
+					printw(" Unregistered player\n");
+					int sum = 0;
+					vector <vector <card*>> temp = table.get_group();
+					for(int i = initial_GID+1;i<=table.get_num_rows();i++){
+						for(size_t j=0;j<temp[i].size();j++){
+							sum += temp[i][j]->get_value();
+						}
+					}
+					printw(" Sum of points of initial move : %d\n",sum);
+					refresh();
+					if(sum < 30){
+						printw(" Your initial move must have a value of 30 points or more");
+						printw("\n Press Any Key...\n");
+						refresh();
+                        players[t].copy(saved_checkpoint.get_player_data(t)); 
+                        table.copy(saved_checkpoint.get_board_data());
+                        if(state == 1) {
+                            state = 0;
+                        }
+                        else if(state == 3) {
+                            state = 2;
+                        }
+						getch();
+						continue;
+					}
+				}
+
                 if(state == 0) {
                     printw(" You can make checkpoint after making a new group!\n");
                     refresh();
@@ -449,8 +488,12 @@ int main(){
                         printw(" Checkpoint saved!\n");
 					    refresh();
                         state = 2;
+						if(players[t].get_is_register() == false){
+							players[t].set_is_register(true);
+						}
                     }	
                 }
+				
 
 				printw("\n Press Any Key...\n");
 				getch();
