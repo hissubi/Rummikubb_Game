@@ -15,6 +15,7 @@ class card{
             
             int get_id();
             int get_loc();
+			int get_value();
 		    void set_loc(int loc_);
             
             void print_card();
