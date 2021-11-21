@@ -17,6 +17,10 @@ int card::get_id(){
     return id;
 }
 
+int card::get_value(){
+	return value;
+}
+
 void card::print_card(){
 	attron(COLOR_PAIR(color+1));
 	printw("%2d", value);
