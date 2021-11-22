@@ -80,6 +80,7 @@ int main(){
         if(load[0] == 'y') {        
 
             load_log_data(num_players, turn);
+            saved_checkpoint.set_nplayer(num_players);
             printw(" Load game starts!\n");
 			printw("\n"); refresh();
 			//todo : rearrange deck
