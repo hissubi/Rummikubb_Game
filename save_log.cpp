@@ -73,5 +73,18 @@ void load_log_data(int& nplayers, int& turn)
     }
     saved_checkpoint.copy_all(players, table);
     fclose(log_file);
+
+    for(int i = 1; i < nplayers+1; i++){
+        for(int j = 0; j < players[i].card_num; j++){
+            auto deck_it = find(deck.begin(), deck.end(), players[i].hand_card[j]->get_id());
+            deck.erase(deck_it);
+        }
+    }
+    for(int i = 1; i <= table.num_rows; i++){
+        for(int j = 0; j < table.group[i].size(); j++){
+            auto deck_it = find(deck.begin(), deck.end(), table.group[i][j]->get_id());
+            deck.erase(deck_it);
+        } 
+    }
 	//todo : rearrange deck
 }
