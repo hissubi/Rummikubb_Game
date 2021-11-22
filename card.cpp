@@ -1,6 +1,9 @@
 #include "class.h"
 #include "extern.h"
 #include <ncurses.h>
+#include <wctype.h>
+#include <wchar.h>
+#include <locale.h>
 
 card::card(){
         return;
@@ -23,7 +26,15 @@ int card::get_value(){
 
 void card::print_card(){
 	attron(COLOR_PAIR(color+1));
-	printw("%2d", value);
+	if(value == joker_value){
+		//attron(A_BOLD);
+		setlocale(LC_ALL,"");
+		//printw(" ");
+		const wchar_t* joker = L"\x1f608";
+		addwstr(joker);
+		//attroff(A_BOLD);
+	}
+	else printw("%2d", value);
 	attroff(COLOR_PAIR(color+1));
 }
 

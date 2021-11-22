@@ -9,6 +9,7 @@
 #include <vector>
 #include <ncurses.h>
 
+
 #define init_card_num	14
 
 void set_color(int color);
@@ -46,6 +47,8 @@ int main(){
 	init_pair(6, COLOR_WHITE, COLOR_BLACK);
 	init_color(COLOR_MAGENTA, 488, 950, 800);
 	init_pair(7, COLOR_MAGENTA, COLOR_BLACK);
+	init_color(COLOR_CYAN, 920, 100, 920);
+	init_pair(8, COLOR_CYAN, COLOR_BLACK);
 
 	for(int i=0;i<8;i++){
 		for(int j=1;j<=13;j++){
@@ -54,11 +57,10 @@ int main(){
 			deck.push_back(id);
 		}
 	}
-	/**** push joker ****/
-	/*all_cards[105] = card(105, joker_value, 5);
+	all_cards[105] = card(105, 7, joker_value);
 	deck.push_back(105);
-	all_cards[106] = card(106, joker_value, 5);
-	deck.push_back(106);*/
+	all_cards[106] = card(106, 7, joker_value);
+	deck.push_back(106);
 
 	random_device rd;
 	mt19937 g(rd());
