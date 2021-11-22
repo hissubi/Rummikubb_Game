@@ -397,7 +397,7 @@ val_check:
 					refresh();
 					valid_input = false;
 				}
-				if(players[t].get_is_register() == false && tgid <= initial_GID && tgid != 0){
+				if(players[t].get_is_register() == false && (tgid <= initial_GID && tgid != 0 || fgid<= initial_GID && fgid !=0)){
 					printw(" You can't manipulate board's groups before register!\n");
 					valid_input = false;
 				}
