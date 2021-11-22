@@ -404,6 +404,10 @@ int main(){
                 if( (unsigned) toff >  temp[tgid].size() ){			//pull card
 					toff = temp[tgid].size();
                 }
+				if(temp[fgid].size() == 0 && fgid != 0){
+					printw(" You can't move blank!\n");
+					valid_input = false;
+				}
 				if(!valid_input){
 					refresh();
 					getch();
