@@ -547,6 +547,9 @@ val_check:
 			clear();
 			printw(" Winner is Player %d!\n",t);
 			refresh();
+			printw(" Press x to pay respect\n");
+			getch();
+			endwin();
 			return 0;
 		}
 
@@ -559,6 +562,7 @@ val_check:
 		getch();
 	}
 	/**** todo : check who is winner ****/
+	endwin();
 	return 0;
 }
 
