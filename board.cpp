@@ -186,3 +186,86 @@ void board::copy(board a) {
     } */       
 }
 
+int board::get_sum_group(int gid){
+
+	int ret = 0;
+	// joker checkpoint
+	int joker_1st = -1;
+	int joker_2nd = -1;
+	int cnt_joker = 0;
+
+    for(size_t i=0; i<group[gid].size(); i++){
+		if(group[gid][i]->get_value() == joker_value){
+			cnt_joker++;
+			if(joker_1st == -1) joker_1st = i;
+			else joker_2nd = i;
+		}
+		ret += group[gid][i]->get_value();
+    }
+	ret -= 99 * cnt_joker;
+
+	if(cnt_joker == 0){}
+	if(cnt_joker == 1){
+// joker 1
+		if(joker_1st == 0){
+			if(group[gid][1]->get_value() == group[gid][2]->get_value())
+				ret += group[gid][1]->get_value();
+			else
+				ret += group[gid][1]->get_value() - 1;
+		}
+		else if(joker_1st == (signed) group[gid].size() - 1){
+			if(group[gid][0]->get_value() == group[gid][1]->get_value())
+				ret += group[gid][joker_1st-1]->get_value();
+			else
+				ret += group[gid][joker_1st-1]->get_value() + 1;
+		}
+		else{
+			if(group[gid][joker_1st-1]->get_value() == group[gid][joker_1st+1]->get_value())
+				ret += group[gid][joker_1st-1]->get_value();
+			else
+				ret += group[gid][joker_1st-1]->get_value() + 1;
+		}
+	}
+	else{
+// joker 2
+		int tmp_val = -1;
+		int seq = 0;
+		int size = group[gid].size();
+		if( size == 3 ){
+			if(group[gid][0]->get_value() != joker_value) 
+				ret += group[gid][0]->get_value()*2 + 3;
+			else if(group[gid][1]->get_value() != joker_value) 
+				ret += group[gid][1]->get_value()*2;
+			else ret += group[gid][2]->get_value() * 2 - 3;
+		}
+		else{
+			for(int i=0; i<size; i++){
+				if(group[gid][i]->get_value() == joker_value) continue;
+				if(tmp_val == -1) tmp_val = group[gid][i]->get_value();
+				if(tmp_val != group[gid][i]->get_value()) seq = 1;
+			}
+			if( seq == 0 ){
+				ret += tmp_val * 2;
+			}
+			else{
+				if(joker_1st == 0 && joker_2nd == 1){
+					ret += group[gid][2]->get_value() * 2 - 3;
+				}
+				else if(joker_1st == size-2 && joker_2nd == size-1){
+					ret += group[gid][size-3]->get_value() * 2 + 3;
+				}
+				else if(joker_1st + 1 == joker_2nd){
+					ret += group[gid][joker_1st-1]->get_value() + 1;
+					ret += group[gid][joker_2nd+1]->get_value() - 1;
+				}
+				else{
+					ret += group[gid][joker_1st+1]->get_value() - 1;
+					ret += group[gid][joker_2nd-1]->get_value() + 1;
+				}
+			}
+		}
+	}
+		
+	return ret;
+}
+

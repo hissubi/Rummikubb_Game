@@ -319,7 +319,7 @@ int main(){
 									current_x >= vbase_x + 3*players[t].get_card_num() - 3){
 								break;
 							}
-							if(current_x >= vbase_x + 3*20){
+							if(current_x >= vbase_x + 3*25){
 								break;
 							}
 							mvdelch(current_y, current_x);
@@ -465,12 +465,21 @@ val_check:
 						if(players[t].get_is_register() == false){
 							printw(" Unregistered player\n");
 							int sum = 0;
-							vector <vector <card*>> temp = table.get_group();
+					//========== Check sum with joker ==============================//
+
+							//vector <vector <card*>> temp = table.get_group();
 							for(int i = initial_GID+1;i<=table.get_num_rows();i++){
-								for(size_t j=0;j<temp[i].size();j++){
-									sum += temp[i][j]->get_value();
-								}
+								sum += table.get_sum_group(i);
+								/*for(size_t j=0;j<temp[i].size();j++){
+									// Check if Joker
+									int reg_check_value = temp[i][j]->get_value();
+									if(reg_check_value == joker_value){
+										
+									}
+									sum += reg_check_value;
+								}*/
 							}
+
 							printw(" Sum of points of initial move : %d\n",sum);
 							refresh();
 							if(sum < 30){					

@@ -48,6 +48,8 @@ class board{
         void copy(board a);
         
         friend void load_log_data(int& nplayers, int& turn);
+
+		int get_sum_group(int gid);
 		
     private:
 		int num_rows;
