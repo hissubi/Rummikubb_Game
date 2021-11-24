@@ -24,7 +24,7 @@ player players[5];
 vector<int> deck;
 card all_cards[13*8+3];
 board table;
-checkpoint saved_checkpoint;
+checkpoint* saved_checkpoint[5];
 
 int main(){
 	char load[5];
@@ -82,10 +82,9 @@ int main(){
 		if(load[0] == 'y') {        
 
 			load_log_data(num_players, turn);
-			saved_checkpoint.set_nplayer(num_players);
+			//saved_checkpoint.set_nplayer(num_players);
 			printw(" Load game starts!\n");
 			printw("\n"); refresh();
-			//todo : rearrange deck
 			break;
 		}
 		else if(load[0] == 'n') {
@@ -106,7 +105,7 @@ int main(){
 				}
 				else break;
 			}
-			saved_checkpoint.set_nplayer(num_players);
+			//saved_checkpoint.set_nplayer(num_players);
 			for(int i=1;i<=num_players;i++){
 				players[i] = player(i);
 				distribute_initial_card(i);
@@ -122,7 +121,15 @@ int main(){
 
 	// Start Game ===========================================================//
 
-	saved_checkpoint.copy_all(players, table);
+    for(int i = 0; i <= num_players; i++){
+        if(i == 0){
+            saved_checkpoint[i] = new board(0);
+            saved_checkpoint[i]->copy_to_cp(0);
+            continue;
+        }
+        saved_checkpoint[i] = new player();
+        saved_checkpoint[i]->copy_to_cp(i);
+    }
 
 	noecho();
 
@@ -268,7 +275,8 @@ int main(){
 				else{
 					players[t].sort_by_number();
 				}
-				saved_checkpoint.copy(t, players[t], table);
+                saved_checkpoint[0]->copy_to_cp(0);
+                saved_checkpoint[t]->copy_to_cp(t);
 				printw("\n Press Any Key...\n");
 				getch();
 				break;
@@ -452,8 +460,8 @@ val_check:
 					if(table.check_valid_fin()){
 						printw(" Load previous table...\n");
 						refresh();
-						players[t].copy(saved_checkpoint.get_player_data(t)); 
-						table.copy(saved_checkpoint.get_board_data());
+						saved_checkpoint[0]->copy_from_cp(0);
+						saved_checkpoint[t]->copy_from_cp(t);
 						if(state == 1) {
 							state = 0;
 						}
@@ -486,8 +494,8 @@ val_check:
 								printw(" Your initial move must have a value of 30 points or more");
 								printw("\n Press Any Key...\n");
 								refresh();
-								players[t].copy(saved_checkpoint.get_player_data(t)); 
-								table.copy(saved_checkpoint.get_board_data());
+								saved_checkpoint[0]->copy_from_cp(0);
+						        saved_checkpoint[t]->copy_from_cp(t);
 								if(state == 1) {
 									state = 0;
 								}
@@ -498,7 +506,8 @@ val_check:
 								continue;
 							}
 						}
-						saved_checkpoint.copy(t, players[t], table);
+                        saved_checkpoint[0]->copy_to_cp(0);
+                        saved_checkpoint[t]->copy_to_cp(t);
 						printw(" Checkpoint saved!\n");
 						refresh();
 						state = 2;
@@ -526,8 +535,8 @@ val_check:
 					if(table.check_valid_fin()){
 						printw(" Load previous table...\n");
 						refresh();
-						players[t].copy(saved_checkpoint.get_player_data(t)); 
-						table.copy(saved_checkpoint.get_board_data());
+						saved_checkpoint[0]->copy_from_cp(0);
+                        saved_checkpoint[t]->copy_from_cp(t);
 						if(state == 1) {
 							state = 0;
 						}
@@ -536,7 +545,8 @@ val_check:
 						}       
 					}
 					else{
-						saved_checkpoint.copy(t, players[t], table);
+						saved_checkpoint[0]->copy_to_cp(0);
+                        saved_checkpoint[t]->copy_to_cp(t);
 						break;
 					}    
 				}   

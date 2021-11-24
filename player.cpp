@@ -2,8 +2,10 @@
 #include "extern.h"
 #include <ncurses.h>
 
-player::player(){
-	return;
+player::player():checkpoint(){
+    player_id = 0;
+    card_num = 0;
+    is_register = false;
 }
 
 player::player(int id_){
@@ -93,22 +95,30 @@ void player::add_card(card* _hand_card){
 	hand_card.push_back(_hand_card);
 	card_num++;
 }
-void player::copy(player p){
-    is_register = p.get_is_register();
-    player_id = p.get_player_id();
-    card_num = p.get_card_num();
+void player::copy_to_cp(int num){
+    is_register = players[num].get_is_register();
+    player_id = players[num].get_player_id();
+    card_num = players[num].get_card_num();
     if(card_num)
 	{
-		hand_card = p.get_card();
+		hand_card = players[num].get_card();
 	}
 	else
 	{
 		hand_card.clear();
 	}
-    /*
-    hand_card.resize(card_num);
-    for(int i = 0; i < card_num; i++){
-        hand_card[i] = p.get_card().at(i);
-    }*/
+}
+void player::copy_from_cp(int num){
+    players[num].set_is_register(is_register);
+    players[num].set_player_id(player_id);
+    players[num].set_card_num(card_num);
+    if(card_num)
+	{
+		players[num].set_card(hand_card);
+	}
+	else
+	{
+		players[num].get_card().clear();
+	}
 }
 

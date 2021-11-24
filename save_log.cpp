@@ -71,7 +71,6 @@ void load_log_data(int& nplayers, int& turn)
         }
 		table.group.push_back(buf);
     }
-    saved_checkpoint.copy_all(players, table);
     fclose(log_file);
 
     for(int i = 1; i < nplayers+1; i++){

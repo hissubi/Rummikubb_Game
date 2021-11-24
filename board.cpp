@@ -8,6 +8,12 @@ board::board(){
 	group.push_back(temp);
     num_rows = 0;
 }
+board::board(int state_): checkpoint(state_){
+    group.clear();
+	vector <card *> temp;
+	group.push_back(temp);
+    num_rows = 0;
+}
 
 int board::get_num_rows(){
     return num_rows;
@@ -172,19 +178,16 @@ int board::check_valid_fin(){
 	return 0;
 }
 
-void board::copy(board a) {
-    
-    group = a.get_group(); 
-    num_rows = a.get_num_rows();
-    /*
-    group.resize(num_rows);
-    for(int i = 0; i < num_rows; i++) {
-        group[i].resize(a.get_group().at(i).size());
-        for(size_t j = 0; j < group[i].size(); j++){
-            group[i][j] = a.get_group().at(i).at(j);
-        }
-    } */       
+void board::copy_to_cp(int num) {
+    group = table.get_group(); 
+    num_rows = table.get_num_rows();
 }
+
+void board::copy_from_cp(int num) {
+    table.set_group(group); 
+    table.set_num_rows(num_rows);
+}
+
 
 int board::get_sum_group(int gid){
 

@@ -32,9 +32,21 @@ class card{
 		int loc;
 };
 
-class board{
+class checkpoint{
+    public:
+        checkpoint();
+        checkpoint(int state_);
+
+        virtual void copy_from_cp(int num)=0;
+        virtual void copy_to_cp(int num)=0;
+    private:
+        int state;
+};
+
+class board: public checkpoint{
 	public:
 		board();
+        board(int state_);
         
         int get_num_rows();
         void set_num_rows(int);
@@ -45,7 +57,8 @@ class board{
 		int group_type_check(int idx);
 
         void print_board();
-        void copy(board a);
+        void copy_from_cp(int num);
+        void copy_to_cp(int num);
         
         friend void load_log_data(int& nplayers, int& turn);
 
@@ -56,7 +69,7 @@ class board{
 		vector <vector <card*>> group;
 };
 
-class player{
+class player: public checkpoint{
 	public:
 		player();
 		player(int id);
@@ -66,9 +79,9 @@ class player{
 		int get_player_id();
         void set_player_id(int id_);
 		int get_card_num();
-        void set_card_num(int);
+        void set_card_num(int in);
         vector<card*> get_card();
-        void set_card(vector<card*>);
+        void set_card(vector<card*>in);
 		
         bool is_bigger_by_color(card* a, card* b);
         bool is_bigger_by_number(card* a, card* b);
@@ -76,7 +89,8 @@ class player{
 		void sort_by_number();
 		
         void add_card(card* hand_card);
-        void copy(player p);
+        void copy_from_cp(int num);
+        void copy_to_cp(int num);
         friend void load_log_data(int& nplayers, int& turn);
 
 
@@ -87,20 +101,4 @@ class player{
 		vector<card*> hand_card; 
 };
 
-class checkpoint{
-    public:
-        checkpoint();
-        checkpoint(int nplayer_);
-
-        void set_nplayer(int nplayer_);
-        player get_player_data(int player_num);
-        board get_board_data();
-
-        void copy(int player_num, player p, board b);
-        void copy_all(player* p, board b);
-    private:
-        player* player_data;
-        board board_data;
-        int nplayer;
-};
 #endif
