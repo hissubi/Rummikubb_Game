@@ -208,6 +208,9 @@ int main(){
 			printw(" \n   |  5. Finish ");
 			getyx(win, curr_x[5], curr_y[5]);
 			printw("\t\t       |");
+			printw(" \n   |  6. Restart ");
+			getyx(win, curr_x[6], curr_y[6]);
+			printw("\t\t       |");
 			printw(" \n");
 			//printw(" ----------------------------------- \n");
 			attroff(A_BOLD);
@@ -229,7 +232,7 @@ int main(){
 						mvaddch(curr_x[select], curr_y[select], '<');
 						break;
 					case KEY_DOWN:
-						if(select == 5) break;
+						if(select == 6) break;
 						mvaddch(curr_x[select], curr_y[select], ' ');
 						select++;
 						mvaddch(curr_x[select], curr_y[select], '<');
@@ -249,6 +252,7 @@ int main(){
 			if(select == 4 && sort_type == true) printw("Sort_by_Number!");
 			if(select == 4 && sort_type == false) printw("Sort_by_Color!");
 			if(select == 5) printw("Finish!");
+			if(select == 6) printw("Restart...");
 			printw("\n\n");
 			refresh();
 
@@ -573,7 +577,11 @@ val_check:
 			else if(select == 4){
 				if( sort_type == false) sort_type = true;
 				else sort_type = false;
-			}	
+			}
+			else if(select == 6){
+				load_log_data(num_players, turn);
+				//do something
+			}
 			else{
 				printw(" Invalid input! Try again.\n");
 				refresh();
