@@ -552,11 +552,11 @@ val_check:
 			}
 			else if(select == 5){
 				//todo : check if board is valid, if invalid, return to checkpoint
-				if(players[t].get_card_num() < initial_card_num){
+				if(players[t].get_card_num() == initial_card_num){
 					printw(" You must move 1 or more cards from your hand to finish\n");
 					refresh();
-				}
-				if(state == 0){
+                }
+                else if(state == 0){
 					printw(" Can't finish yet\n");
 					refresh();
 				}
@@ -580,7 +580,7 @@ val_check:
 					}    
 				}   
 				printw("\n Press Any Key...\n");
-				getch();
+                getch();
 			}
 			else if(select == 4){
 				if( sort_type == false) sort_type = true;
