@@ -161,11 +161,10 @@ int main(){
 			table.print_board();
 
 			/**** print blank group that player can use to make new group ****/
-			printw("\n\n");
+			printw("\n");
 			attron(A_BOLD);
 			printw(" GID% -2d \n", table.get_num_rows()+1);
 			attroff(A_BOLD);
-			printw("\n");
 			/********/
 
 			printw("\n");
@@ -290,8 +289,9 @@ int main(){
 				int tgid, toff = 0;
 				int vbase_x = 10;
 				int vbase_y = 7;
+				int gap_y = 2;
 				int starting_x = 10;
-				int starting_y = 13 + table.get_num_rows() * 3;
+				int starting_y = 9 + gap_y + table.get_num_rows() * gap_y;
 				int current_x = starting_x;
 				int current_y = starting_y;
 				mvinsch(current_y, current_x, '<');
@@ -299,11 +299,11 @@ int main(){
 				while( (ch = getch()) != 'q'){
 					switch(ch) {
 						case KEY_UP:
-							if(current_y -3 == vbase_y){
+							if(current_y -gap_y == vbase_y){
 								break;
 							}
 							mvdelch(current_y, current_x);
-							current_y -= 3;
+							current_y -= gap_y;
 							mvinsch(current_y, current_x, '<');
 							break;
 						case KEY_DOWN:
@@ -311,7 +311,7 @@ int main(){
 								break;
 							}
 							mvdelch(current_y, current_x);
-							current_y += 3;
+							current_y += gap_y;
 							mvinsch(current_y, current_x, '<');
 							break;
 						case KEY_LEFT:
@@ -339,7 +339,7 @@ int main(){
 								fgid = 0;
 							}
 							else{
-								fgid = (((current_y - vbase_y) )/3);
+								fgid = (((current_y - vbase_y) )/gap_y);
 							}
 							foff = (current_x - vbase_x) / 3;
 							phase = 1;
@@ -349,7 +349,7 @@ int main(){
 								tgid = 0;
 							}
 							else{
-								tgid = (((current_y - vbase_y) )/3);
+								tgid = (current_y - vbase_y)/gap_y;
 							}
 							toff = (current_x - vbase_x +3 ) / 3;
 							if(phase == 1){

@@ -32,7 +32,7 @@ void board::set_group(vector <vector<card *>> in){
 void board::print_board(){ // Update
 	for(int i=1;i<=num_rows;i++){
 		attron(A_BOLD);
-		printw("\n\n GID %-2d ", i);
+		printw("\n GID %-2d ", i);
 		attroff(A_BOLD);
 		refresh();
 		for(size_t j=0; j<group[i].size(); j++){
