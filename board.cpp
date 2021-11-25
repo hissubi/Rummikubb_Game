@@ -207,7 +207,9 @@ int board::get_sum_group(int gid){
     }
 	ret -= 99 * cnt_joker;
 
-	if(cnt_joker == 0){}
+	if(cnt_joker == 0){
+		return ret;
+	}
 	if(cnt_joker == 1){
 // joker 1
 		if(joker_1st == 0){
