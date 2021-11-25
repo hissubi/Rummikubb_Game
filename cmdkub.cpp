@@ -417,6 +417,10 @@ val_check:
 					printw(" You can't move blank!\n");
 					valid_input = false;
 				}
+				if(fgid != 0 && temp[fgid].size() <= foff){
+					printw(" You can't move blank!\n");
+					valid_input = false;
+				}
 				if(!valid_input){
 					refresh();
 					getch();
@@ -432,17 +436,30 @@ val_check:
 				else if(state == 2) state = 3;
 				temp[0] = players[t].get_card();
 				card *moving_card = temp[fgid][foff];
-				if(tgid == table.get_num_rows()+1){
-					int new_num_rows = table.get_num_rows() + 1;
-					vector<card *> buf;
-					buf.push_back(moving_card);
-					temp.push_back(buf);
-					table.set_num_rows(new_num_rows);
-				}
-				else{
+
+				if(tgid == fgid){ 	//sort
 					temp[tgid].insert(temp[tgid].begin()+toff,moving_card);
+					if(toff < foff){
+						temp[fgid].erase(temp[fgid].begin()+foff+1);
+					}
+					else{
+						temp[fgid].erase(temp[fgid].begin()+foff);
+					}
 				}
-				temp[fgid].erase(temp[fgid].begin()+foff);
+				else{	//insert and delete
+					if(tgid == table.get_num_rows()+1){
+						int new_num_rows = table.get_num_rows() + 1;
+						vector<card *> buf;
+						buf.push_back(moving_card);
+						temp.push_back(buf);
+						table.set_num_rows(new_num_rows);
+					}
+					else{
+						temp[tgid].insert(temp[tgid].begin()+toff,moving_card);
+					}
+				temp[fgid].erase(temp[fgid].begin()+foff);	
+				}
+
 				players[t].set_card(temp[0]);
 				players[t].set_card_num(temp[0].size());
 				temp[0].clear();
