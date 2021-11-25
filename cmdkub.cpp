@@ -629,25 +629,6 @@ void distribute_initial_card(int player_id){
 	}
 	return;
 }
-
-void set_color(int color){
-	if(color == 0){ //red
-		printf("%c[1;31m",27);
-	}
-	else if(color == 1){
-		printf("%c[1;34m",27);
-	}
-	else if(color == 2){
-		printf("%c[1;33m",27);
-	}
-	else if(color == 3){
-		printf("%c[1;36m",27);
-	}
-	else{
-		printf("%c[1;37m",27);
-	}
-}
-
 int pop_card_from_deck(){
 	int ret;
 	ret = deck[deck.size()-1];
