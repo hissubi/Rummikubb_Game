@@ -25,6 +25,7 @@ vector<int> deck;
 card all_cards[13*8+3];
 board table;
 checkpoint* saved_checkpoint[5];
+checkpoint* initial_checkpoint[5];
 
 int main(){
 	char load[5];
@@ -125,10 +126,14 @@ int main(){
         if(i == 0){
             saved_checkpoint[i] = new board(0);
             saved_checkpoint[i]->copy_to_cp(0);
+			initial_checkpoint[i] = new board(0);
+			initial_checkpoint[i]->copy_to_cp(0);
             continue;
         }
         saved_checkpoint[i] = new player();
         saved_checkpoint[i]->copy_to_cp(i);
+        initial_checkpoint[i] = new player();
+        initial_checkpoint[i]->copy_to_cp(i);
     }
 
 	noecho();
@@ -143,6 +148,9 @@ int main(){
 		int initial_GID = table.get_num_rows();
 		int initial_card_num = players[t].get_card_num();
 
+
+		initial_checkpoint[0]->copy_to_cp(0);
+		initial_checkpoint[t]->copy_to_cp(t);
 		while(1){
 			clear();
 			attron(A_BOLD | COLOR_PAIR(5));
@@ -579,9 +587,11 @@ val_check:
 				else sort_type = false;
 			}
 			else if(select == 6){
-				load_log_data(num_players, turn);
-				//do something
-			}
+			
+				initial_checkpoint[0]->copy_from_cp(0);
+				initial_checkpoint[t]->copy_from_cp(t);
+				state = 0;
+		}
 			else{
 				printw(" Invalid input! Try again.\n");
 				refresh();
