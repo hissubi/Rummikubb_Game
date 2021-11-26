@@ -36,7 +36,8 @@ class checkpoint{
     public:
         checkpoint();
         checkpoint(int state_);
-
+        virtual ~checkpoint(){}
+        
         virtual void copy_from_cp(int num)=0;
         virtual void copy_to_cp(int num)=0;
     private:
@@ -47,7 +48,8 @@ class board: public checkpoint{
 	public:
 		board();
         board(int state_);
-        
+        ~board(){}
+
         int get_num_rows();
         void set_num_rows(int);
         vector <vector <card*>> get_group();
@@ -73,6 +75,7 @@ class player: public checkpoint{
 	public:
 		player();
 		player(int id);
+        ~player(){}
         
         bool get_is_register();
 		void set_is_register(bool in);

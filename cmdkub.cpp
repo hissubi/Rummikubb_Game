@@ -666,6 +666,10 @@ val_check:
 	}
 	/**** todo : check who is winner ****/
 	endwin();
+    for(int i = 0; i < num_players; i++){
+        delete saved_checkpoint[i];
+        delete initial_checkpoint[i];
+    }
 	return 0;
 }
 
