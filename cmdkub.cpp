@@ -513,7 +513,9 @@ val_check:
 							printw(" Sum of points of initial move : %d\n",sum);
 							refresh();
 							if(sum < 30){					
+	                            attron(A_BOLD | COLOR_PAIR(1));
 								printw(" Your initial move must have a value of 30 points or more");
+	                            attroff(A_BOLD | COLOR_PAIR(1));
 								printw("\n Press Any Key...\n");
 								refresh();
 								saved_checkpoint[0]->copy_from_cp(0);
@@ -529,16 +531,15 @@ val_check:
 							}
                             else{
                                 players[t].set_is_register(true);
+	                            attron(A_BOLD | COLOR_PAIR(2));
                                 printw(" Registration success!\n");
+	                            attroff(A_BOLD | COLOR_PAIR(2));
                             }   
 						}
                         saved_checkpoint[0]->copy_to_cp(0);
                         saved_checkpoint[t]->copy_to_cp(t);
 						printw(" Checkpoint saved!\n");
 						state = 2;
-						if(players[t].get_is_register() == false){
-							players[t].set_is_register(true);
-						}
 					}	
 				}
 
@@ -582,8 +583,10 @@ val_check:
 
 							printw(" Sum of points of initial move : %d\n",sum);
 							refresh();
-							if(sum < 30){					
+							if(sum < 30){		
+                                attron(A_BOLD | COLOR_PAIR(1));
 								printw(" Your initial move must have a value of 30 points or more");
+                                attroff(A_BOLD | COLOR_PAIR(1));
 								printw("\n Press Any Key...\n");
 								refresh();
 								saved_checkpoint[0]->copy_from_cp(0);
@@ -599,7 +602,9 @@ val_check:
 							}
                             else{
                                 players[t].set_is_register(true);
+	                            attron(A_BOLD | COLOR_PAIR(2));
                                 printw(" Registration success!\n");
+	                            attroff(A_BOLD | COLOR_PAIR(2));
                             }   
 						}
                         saved_checkpoint[0]->copy_to_cp(0);
