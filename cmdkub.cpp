@@ -506,17 +506,8 @@ val_check:
 							int sum = 0;
 					//========== Check sum with joker ==============================//
 
-							//vector <vector <card*>> temp = table.get_group();
 							for(int i = initial_GID+1;i<=table.get_num_rows();i++){
 								sum += table.get_sum_group(i);
-								/*for(size_t j=0;j<temp[i].size();j++){
-									// Check if Joker
-									int reg_check_value = temp[i][j]->get_value();
-									if(reg_check_value == joker_value){
-										
-									}
-									sum += reg_check_value;
-								}*/
 							}
 
 							printw(" Sum of points of initial move : %d\n",sum);
@@ -536,11 +527,14 @@ val_check:
 								getch();
 								continue;
 							}
+                            else{
+                                players[t].set_is_register(true);
+                                printw(" Registration success!\n");
+                            }   
 						}
                         saved_checkpoint[0]->copy_to_cp(0);
                         saved_checkpoint[t]->copy_to_cp(t);
 						printw(" Checkpoint saved!\n");
-						refresh();
 						state = 2;
 						if(players[t].get_is_register() == false){
 							players[t].set_is_register(true);
@@ -550,6 +544,7 @@ val_check:
 
 
 				printw("\n Press Any Key...\n");
+                refresh();
 				getch();
 			}
 			else if(select == 5){
@@ -563,7 +558,7 @@ val_check:
 					refresh();
 				}
 				else{
-					if(table.check_valid_fin()){
+                    if(table.check_valid_fin()){
 						printw(" Load previous table...\n");
 						refresh();
 						saved_checkpoint[0]->copy_from_cp(0);
@@ -576,12 +571,47 @@ val_check:
 						}       
 					}
 					else{
-						saved_checkpoint[0]->copy_to_cp(0);
+						if(players[t].get_is_register() == false){
+							printw(" Unregistered player\n");
+							int sum = 0;
+					//========== Check sum with joker ==============================//
+
+							for(int i = initial_GID+1;i<=table.get_num_rows();i++){
+								sum += table.get_sum_group(i);
+							}
+
+							printw(" Sum of points of initial move : %d\n",sum);
+							refresh();
+							if(sum < 30){					
+								printw(" Your initial move must have a value of 30 points or more");
+								printw("\n Press Any Key...\n");
+								refresh();
+								saved_checkpoint[0]->copy_from_cp(0);
+						        saved_checkpoint[t]->copy_from_cp(t);
+								if(state == 1) {
+									state = 0;
+								}
+								else if(state == 3) {
+									state = 2;
+								}
+								getch();
+								continue;
+							}
+                            else{
+                                players[t].set_is_register(true);
+                                printw(" Registration success!\n");
+                            }   
+						}
+                        saved_checkpoint[0]->copy_to_cp(0);
                         saved_checkpoint[t]->copy_to_cp(t);
+                        printw("\n Press Any Key...\n");
+                        refresh();
+                        getch();
 						break;
 					}    
 				}   
 				printw("\n Press Any Key...\n");
+                refresh();
                 getch();
 			}
 			else if(select == 4){
