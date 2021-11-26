@@ -34,27 +34,30 @@ void save_log_data(int nplayers, int turn)
 
 void load_log_data(int& nplayers, int& turn)
 {
+	int trash;
+	trash = 0;
+
     FILE* log_file = fopen("Logfile.txt", "r");
-    fscanf(log_file, "%d %d", &nplayers, &turn);
+    trash = fscanf(log_file, "%d %d", &nplayers, &turn);
 
     for(int i = 1; i < nplayers+1; i++)
     {
         int now_player, is_register;
-        fscanf(log_file, "%d %d", &now_player, &is_register);
+        trash = fscanf(log_file, "%d %d", &now_player, &is_register);
         if(is_register == 1) players[i].is_register = true;
         else players[i].is_register = false;
 
 		players[i].hand_card.clear();
-        fscanf(log_file, "%d", &players[i].card_num);
+        trash = fscanf(log_file, "%d", &players[i].card_num);
         for(int j = 0; j < players[i].card_num; j++) {
             int card_id;
-            fscanf(log_file, "%d", &card_id);
+            trash = fscanf(log_file, "%d", &card_id);
             card* load_card = &all_cards[card_id];
             players[i].hand_card.push_back(load_card);
         }
     }
 
-    fscanf(log_file, "%d", &table.num_rows);
+    trash = fscanf(log_file, "%d", &table.num_rows);
 	vector <card*> buf;
 	table.group.clear();
 	buf.clear();
@@ -62,10 +65,10 @@ void load_log_data(int& nplayers, int& turn)
     for(int i = 1; i <= table.num_rows; i++) {
 		buf.clear();
         int group_size;
-        fscanf(log_file, "%d", &group_size);
+        trash = fscanf(log_file, "%d", &group_size);
         for(int j = 0; j < group_size; j++) {
             int card_id;
-            fscanf(log_file, "%d", &card_id);
+            trash = fscanf(log_file, "%d", &card_id);
             card* newcard = &all_cards[card_id]; 
             buf.push_back(newcard);
         }
@@ -80,7 +83,7 @@ void load_log_data(int& nplayers, int& turn)
         }
     }
     for(int i = 1; i <= table.num_rows; i++){
-        for(int j = 0; j < table.group[i].size(); j++){
+        for(size_t j = 0; j < table.group[i].size(); j++){
             auto deck_it = find(deck.begin(), deck.end(), table.group[i][j]->get_id());
             deck.erase(deck_it);
         } 

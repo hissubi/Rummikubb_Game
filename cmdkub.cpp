@@ -297,8 +297,10 @@ int main(){
 				printw(" Press 'q' to quit Move_card\n");
 
 
-				int fgid , foff = 0;
-				int tgid, toff = 0;
+				int fgid = 0;
+				int foff = 0;
+				int tgid = 0;
+				int toff = 0;
 				int vbase_x = 10;
 				int vbase_y = 7;
 				int gap_y = 2;
@@ -417,7 +419,7 @@ val_check:
 					refresh();
 					valid_input = false;
 				}
-				if(players[t].get_is_register() == false && (tgid <= initial_GID && tgid != 0 || fgid<= initial_GID && fgid !=0)){
+				if(players[t].get_is_register() == false && ((tgid <= initial_GID && tgid != 0) || (fgid<= initial_GID && fgid !=0))){
 					printw(" You can't manipulate board's groups before register!\n");
 					valid_input = false;
 				}
@@ -429,7 +431,7 @@ val_check:
 					printw(" You can't move blank!\n");
 					valid_input = false;
 				}
-				if(fgid != 0 && temp[fgid].size() <= foff){
+				if(fgid != 0 && temp[fgid].size() <= (unsigned) foff){
 					printw(" You can't move blank!\n");
 					valid_input = false;
 				}
@@ -599,9 +601,21 @@ val_check:
 		}
 		if(players[t].get_card_num() == 0){
 			clear();
-			printw(" Winner is Player %d!\n",t);
+			attron(A_BOLD);
+			printw("\n\n\n   ************************************************\n\n");
+			attron(COLOR_PAIR(2));
+			printw("\t\t  Winner is Player %d!\n",t);
+			attroff(COLOR_PAIR(2));
+			attron(COLOR_PAIR(3) | A_BLINK);
+			printw("\n  \\\\( ^ @ ^ )//  ~( # _ # )~  z( * O * )z  \\( ' u ' )/ \n");
+			attroff(COLOR_PAIR(3));
+			attroff(A_BLINK);
+			printw("\n   ************************************************\n");
 			refresh();
-			printw(" Press x to pay respect\n");
+			attron(COLOR_PAIR(1));
+			printw("\n\t\tPress 'x' to pay respect\n");
+			attroff(COLOR_PAIR(1));
+			attroff(A_BOLD);
 			getch();
 			endwin();
 			return 0;
